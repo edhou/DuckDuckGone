@@ -59,7 +59,7 @@ void monitor(void const *arg) {
 	GLCD_PutPixel(4,4);
 	GLCD_PutPixel(5,5);
 	
-	
+	// Comments comments comments
 	// Refresh LCD screen
 	while(1) {
 		
