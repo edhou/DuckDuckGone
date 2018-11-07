@@ -6,8 +6,8 @@
 #include "random.h"
 #include "GLCD.h"
 
-// Yann Roberge - yroberge - 20637944
-// Edward Hou - ehou - 20652139
+// Yann Roberge - yroberge
+// Edward Hou - ehou
 
 // Define mailboxes
 
