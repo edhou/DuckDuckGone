@@ -90,7 +90,7 @@ void background(void const* arg) {
 	int i =0;
 	int duckW = 70;
 	int duckH = 70;
-	uint32_t* duckPixels = malloc(sizeof(uint8_t)*duckW*duckH/16);
+	uint8_t* duckPixels = malloc(sizeof(uint8_t)*duckW*duckH/16);
 	
 	for(i=0; i<NDUCKS; i++) {
 		ducks[i].x = 0;
