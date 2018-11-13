@@ -5,7 +5,7 @@
 ".\objects\random.o"
 ".\objects\retarget.o"
 ".\objects\uart.o"
-"C:\Software\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib"
+"C:\Software\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib"
 ".\objects\rtx_conf_cm.o"
 ".\objects\startup_lpc17xx.o"
 ".\objects\system_lpc17xx.o"

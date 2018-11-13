@@ -21,18 +21,15 @@ Target DLL:      UL2CM3.DLL V1.160.3.0
 Dialog DLL:      TCM.DLL V1.32.0.0
  
 <h2>Project:</h2>
-N:\MTE241\DuckDuckGone\DuckDuckGone\DuckDuckGone.uvprojx
-Project File Date:  11/07/2018
+N:\MTE241\DuckDuckGone\DuckDuckGone.uvprojx
+Project File Date:  11/13/2018
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Software\Keil_v5\ARM\ARMCC\Bin'
-Build target 'Target 1'
+Rebuild target 'Target 1'
 compiling lfsr113.c...
 compiling random.c...
 compiling main.c...
-main.c(52): warning:  #223-D: function "GLCD_PutColouredPixel" declared implicitly
-  			GLCD_PutColouredPixel(i,j,Magenta);
-main.c: 1 warning, 0 errors
 compiling Retarget.c...
 compiling GLCD_SPI_LPC1700.c...
 compiling RTX_Conf_CM.c...
@@ -40,17 +37,17 @@ assembling startup_LPC17xx.s...
 compiling uart.c...
 compiling system_LPC17xx.c...
 linking...
-Program Size: Code=9952 RO-data=6684 RW-data=1208 ZI-data=13040  
-".\Objects\DuckDuckGone.axf" - 0 Error(s), 1 Warning(s).
+Program Size: Code=9372 RO-data=6700 RW-data=132 ZI-data=21100  
+".\Objects\DuckDuckGone.axf" - 0 Error(s), 0 Warning(s).
 
 <h2>Software Packages used:</h2>
 
 Package Vendor: ARM
-                http://www.keil.com/pack/ARM.CMSIS.5.4.0.pack
-                ARM.CMSIS.5.4.0
+                http://www.keil.com/pack/ARM.CMSIS.5.3.0.pack
+                ARM.CMSIS.5.3.0
                 CMSIS (Cortex Microcontroller Software Interface Standard)
    * Component: Keil RTX Version: 4.81.1
-   * Component: CORE Version: 5.1.2
+   * Component: CORE Version: 5.1.1
    * Component: RTOS Version: 1.0.0
 
 Package Vendor: Keil
@@ -62,37 +59,37 @@ Package Vendor: Keil
 <h2>Collection of Component include folders:</h2>
   .\RTE\Device\LPC1768
   .\RTE\_Target_1
-  C:\Software\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\Core\Include
-  C:\Software\Keil_v5\ARM\PACK\ARM\CMSIS\5.4.0\CMSIS\RTOS\RTX\INC
+  C:\Software\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\Include
+  C:\Software\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\RTOS\RTX\INC
   C:\Software\Keil_v5\ARM\PACK\Keil\LPC1700_DFP\2.4.0\Device\Include
 
 <h2>Collection of Component Files used:</h2>
 
    * Component: Keil::Device:Startup:1.0.0
-      Source file:   Device\Source\ARM\startup_LPC17xx.s
-      Include file:  RTE_Driver\Config\RTE_Device.h
-      Source file:   Device\Source\system_LPC17xx.c
       Include file:  Device\Include\LPC17xx.h
+      Source file:   Device\Source\ARM\startup_LPC17xx.s
+      Source file:   Device\Source\system_LPC17xx.c
+      Include file:  RTE_Driver\Config\RTE_Device.h
 
    * Component: ARM::CMSIS:RTOS:Keil RTX:4.81.1
       Include file:  CMSIS\RTOS\RTX\INC\cmsis_os.h
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Mutex.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Thread.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Timer.c
-      Include file:  CMSIS\RTOS\RTX\UserCodeTemplates\osObjects.h
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MailQueue.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\main.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MemPool.c
-      Source file:   CMSIS\RTOS\RTX\SRC\ARM\SVC_Table.s
       Source file:   CMSIS\RTOS\RTX\Templates\RTX_Conf_CM.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MsgQueue.c
       Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Semaphore.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Thread.c
+      Include file:  CMSIS\RTOS\RTX\UserCodeTemplates\osObjects.h
       Library file:  CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MailQueue.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MsgQueue.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\main.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Mutex.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Timer.c
+      Source file:   CMSIS\RTOS\RTX\SRC\ARM\SVC_Table.s
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MemPool.c
 
-   * Component: ARM::CMSIS:CORE:5.1.2
+   * Component: ARM::CMSIS:CORE:5.1.1
 
    * Component: ::CMSIS:RTOS:1.0.0 (API)
-Build Time Elapsed:  00:00:05
+Build Time Elapsed:  00:00:04
 </pre>
 </body>
 </html>
