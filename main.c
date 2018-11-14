@@ -34,6 +34,7 @@ sprite_t deadDuck; // only one dead duck can be displayed at a time
 const int NDUCKS = 6;
 uint32_t time;
 uint32_t score;
+unsigned char* direction;
 
 // Define mutex
 osMutexDef(newFrame); // waits for background to update sprite positions
@@ -91,6 +92,7 @@ void monitor(void const *arg) {
 		// Draw background
 		
 		// Draw sprites
+		GLCD_DisplayString(5, 3, 1, direction);
 		//GLCD_Fill((100+x)%edge,100,60,60,BACKCOL);
 		GLCD_Bitmap_Move1px(&x1,&y1,60,60,crosshair_map, Down);
 		//GLCD_Bitmap_Move1px(&x2,&y2,60,60,crosshair_map, Right);
@@ -158,11 +160,18 @@ void aim(void const* arg) {
 	float time = timer_read()/1E6;
 	float deltaTime = time - previousTime;
 	previousTime = time;
-	//MovePlayer(player_speed * delta_time, joystick_read()); 
 
 	// Loop
 	while(1) {
-	   //GLCD_DisplayString(5, 3, 1, joystickRead()); //debug
+		
+		time = timer_read()/1E6;
+		deltaTime = time - previousTime;
+		previousTime = time;
+		//MovePlayer(player_speed * delta_time, joystick_read()); 
+		
+		direction = joystickRead();
+		
+	  //GLCD_DisplayString(5, 3, 1, joystickRead()); //debug
 	}
 }
 
