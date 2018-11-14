@@ -9,9 +9,8 @@
 // Wednesday Group 4
 // MTE 241 Fall 2018
 
-const char* joystickRead(void const *arg)
-{
-    static char* directions[] = {"up", "right", "down", "left", "none"};
+unsigned char* joystickRead(void) {
+    static unsigned char* directions[] = {"up", "right", "down", "left", "none"};
 
     int GPIOAStatus = LPC_GPIO1->FIOPIN;
 		if(!(GPIOAStatus & (1 << 23) ) )
@@ -36,16 +35,15 @@ void joystick(void const *arg) {
 
 float previousTime = 0;
 float time = timer_read()/1E6;
-float deltaTime = time - previoustime;
+float deltaTime = time - previousTime;
 previousTime = time;
-//MovePlayer(player_speed * delta_time, joystick_read()); n
+//MovePlayer(player_speed * delta_time, joystick_read()); 
 
 	// Loop
 	while(1) {
 	   GLCD_DisplayString(4, 3, 1, joystickRead());
 	}
 }
-
 
 
 int main(void) {
