@@ -902,8 +902,7 @@ void GLCD_Bitmap (unsigned int x, unsigned int y, unsigned int w, unsigned int h
 
   GLCD_SetWindow (x, y, w, h);
 
-  wr_cmd(0x22);
-  wr_dat_start();
+
   for (i = (h-1)*w; i > -1; i -= w) {
     for (j = 0; j < w; j++) {
       wr_dat_only (bitmap_ptr[i+j]);
@@ -912,7 +911,82 @@ void GLCD_Bitmap (unsigned int x, unsigned int y, unsigned int w, unsigned int h
   wr_dat_stop();
 }
 
+/*******************************************************************************
+* Display graphical bitmap image at position x horizontally and y vertically   *
+* (This function is optimized for 16 bits per pixel format, it has to be       *
+*  adapted for any other bits per pixel format)                                *
+*   Parameter:      x:        horizontal position                              *
+*                   y:        vertical position                                *
+*                   w:        width of bitmap                                  *
+*                   h:        height of bitmap                                 *
+*                   bitmap:   address at which the bitmap data resides         *
+*   Return:                                                                    *
+*******************************************************************************/
 
+void GLCD_Bitmap_Move1px (unsigned int* x, unsigned int* y, unsigned int w, unsigned int h, unsigned char *bitmap, enum Direction dir) {
+  
+	int i, j;
+  unsigned short *bitmap_ptr = (unsigned short *)bitmap;
+	
+	unsigned int x0 = *x;
+	unsigned int y0 = *y;
+	
+	if (dir == Left) {
+		GLCD_SetWindow (x0, y0+1, w+1, h);
+		if( (*x) > 0 )	
+			(*x) = (*x)-1;
+	}
+	if (dir == Right) {
+		GLCD_SetWindow (x0, y0-1, w+1, h);
+		if( (*x) + w < WIDTH-1 )
+			(*x) = (*x)+1;
+	}
+	if (dir == Up) {
+		GLCD_SetWindow (x0+1, y0-1, w, h+1);
+		if( (*y) > 0 )
+			(*y) = (*y)-1;
+	}
+	if (dir == Down) {
+		GLCD_SetWindow (x0-1, y0, w, h+1);
+		if( (*y) + h < HEIGHT-1 )
+			(*y) = (*y)+1;
+	}
+		
+	wr_cmd(0x22);
+  wr_dat_start();
+	
+	if (dir == Down)
+		for (i=0; i< w; i++)
+			wr_dat_only (Color[BG_COLOR]);
+	
+	for (i = (h-1)*w; i > -1; i -= w) {
+		if (dir == Right)
+			wr_dat_only (Color[BG_COLOR]);
+    for (j = 0; j < w; j++) {
+      wr_dat_only (bitmap_ptr[i+j]);
+    }
+		if (dir == Left)
+			wr_dat_only (Color[BG_COLOR]);
+  }
+	if (dir == Up)
+		for (i=0; i< w; i++)
+			wr_dat_only (Color[BG_COLOR]);
+	
+  wr_dat_stop();
+	
+//  wr_cmd(0x22);
+//  wr_dat_start();
+//  for (i = (h-1)*w; i > -1; i -= w) {
+//    for (j = 0; j < w; j++) {
+//			unsigned short pix = bitmap_ptr[i+j];
+//			if(pix == 0x041f)
+//				;
+//			else
+//				wr_dat_only (pix);
+//    }
+//  }
+//  wr_dat_stop();
+}
 
 /*******************************************************************************
 * Scroll content of the whole display for dy pixels vertically                 *
@@ -940,6 +1014,26 @@ void GLCD_ScrollVertical (unsigned int dy) {
 #endif
 }
 
+/*******************************************************************************
+* Write a command to the LCD controller                                        *
+*   Parameter:      cmd:      command to write to the LCD                      *
+*   Return:                                                                    *
+*******************************************************************************/
+
+void GLCD_Fill (unsigned int x,  unsigned int y, unsigned int w, unsigned int h, unsigned short colour) {
+  int i, j;
+
+  GLCD_SetWindow (x, y, w, h);
+
+  wr_cmd(0x22);
+  wr_dat_start();
+  for (i = (h-1)*w; i > -1; i -= w) {
+    for (j = 0; j < w; j++) {
+      wr_dat_only (colour);
+    }
+  }
+  wr_dat_stop();
+}
 
 /*******************************************************************************
 * Write a command to the LCD controller                                        *

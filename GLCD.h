@@ -39,9 +39,17 @@
 #define Yellow          0xFFE0      /* 255, 255, 0   */
 #define White           0xFFFF      /* 255, 255, 255 */
 
+enum Direction {
+	Left,
+	Right,
+	Up,
+	Down
+};
+
 extern void GLCD_Init           (void);
 extern void GLCD_WindowMax      (void);
 extern void GLCD_PutPixel       (unsigned int x, unsigned int y);
+extern void GLCD_PutColouredPixel (unsigned int x, unsigned int y, unsigned short color);
 extern void GLCD_SetTextColor   (unsigned short color);
 extern void GLCD_SetBackColor   (unsigned short color);
 extern void GLCD_Clear          (unsigned short color);
@@ -51,6 +59,11 @@ extern void GLCD_DisplayString  (unsigned int ln, unsigned int col, unsigned cha
 extern void GLCD_ClearLn        (unsigned int ln, unsigned char fi);
 extern void GLCD_Bargraph       (unsigned int x,  unsigned int y, unsigned int w, unsigned int h, unsigned int val);
 extern void GLCD_Bitmap         (unsigned int x,  unsigned int y, unsigned int w, unsigned int h, unsigned char *bitmap);
+extern void GLCD_Bitmap_Transparent (unsigned int x, unsigned int y, unsigned int w, unsigned int h, unsigned char *bitmap);
+extern void GLCD_Fill						(unsigned int x,  unsigned int y, unsigned int w, unsigned int h, unsigned short colour);
+
+extern void GLCD_Bitmap_Move1px (unsigned int* x, unsigned int* y, unsigned int w, unsigned int h, unsigned char *bitmap, enum Direction dir);
+
 extern void GLCD_ScrollVertical (unsigned int dy);
 
 extern void GLCD_WrCmd          (unsigned char cmd);
