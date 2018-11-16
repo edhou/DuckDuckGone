@@ -89,6 +89,7 @@ void restartGame(void){
 	osDelay(2500); //delay to allow screen to clear 
 	
 	inProgress = 1;
+	fireEnable = 1;
 	time = 60;
 	
 	GLCD_DisplayString(1, 1, 1, "Score: ");
@@ -236,16 +237,16 @@ void fire(void const* arg) {
 	LPC_GPIO2->FIOSET |= (1 << 6);	
 	
 	while(1){
-	while(inProgress == 1){	
+	if(inProgress == 1){	
+		
+		// wait for button press
+		// if button not pressed, wait for it to be pressed
+		while (LPC_GPIO2->FIOPIN & (1 << 10));
+		// if button pressed, wait for it to be released
+		while (!(LPC_GPIO2->FIOPIN & (1 << 10)));
 		
 		if(fireEnable == 1){
-			// wait for button press
-			
-			// if button not pressed, wait for it to be pressed
-			while (LPC_GPIO2->FIOPIN & (1 << 10));
-			// if button pressed, wait for it to be released
-			while (!(LPC_GPIO2->FIOPIN & (1 << 10)));
-				
+						
 			// do stuff on release
 			
 			if(inProgress == 1){ //confirm in progress
@@ -296,18 +297,19 @@ void fire(void const* arg) {
 				fireEnable = 1;
 			}
 		}
-		
-		while(inProgress == 0){	
+	}
+	
+	if(inProgress == 0){	
 			// if button not pressed, wait for it to be pressed
 			while (LPC_GPIO2->FIOPIN & (1 << 10));
 			// if button pressed, wait for it to be released
 			while (!(LPC_GPIO2->FIOPIN & (1 << 10)));
 			
 			restartGame();
-		}
-		
+			inProgress = 1;
 	}
-}
+	
+	}
 }
 
 
