@@ -28,49 +28,48 @@ Project File Date:  11/16/2018
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Software\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
 compiling main.c...
-main.c(78): warning:  #177-D: variable "x2"  was declared but never referenced
+main.c(79): warning:  #177-D: variable "x2"  was declared but never referenced
   	unsigned int x2=120;
-main.c(79): warning:  #177-D: variable "y2"  was declared but never referenced
+main.c(80): warning:  #177-D: variable "y2"  was declared but never referenced
   	unsigned int y2=60;
-main.c(80): warning:  #177-D: variable "x3"  was declared but never referenced
+main.c(81): warning:  #177-D: variable "x3"  was declared but never referenced
   	unsigned int x3=150;
-main.c(81): warning:  #177-D: variable "y3"  was declared but never referenced
+main.c(82): warning:  #177-D: variable "y3"  was declared but never referenced
   	unsigned int y3=60;
-main.c(82): warning:  #177-D: variable "x4"  was declared but never referenced
+main.c(83): warning:  #177-D: variable "x4"  was declared but never referenced
   	unsigned int x4=60;
-main.c(83): warning:  #177-D: variable "y4"  was declared but never referenced
+main.c(84): warning:  #177-D: variable "y4"  was declared but never referenced
   	unsigned int y4=60;
-main.c(149): warning:  #61-D: integer operation result is out of range
+main.c(156): warning:  #61-D: integer operation result is out of range
   	
 PC_GPIO1->FIODIR |= ((1 << 28) | (1 << 29) | (1 << 31)); // bits 28, 29, 31 set as outputs
-main.c(160): warning:  #61-D: integer operation result is out of range
+main.c(167): warning:  #61-D: integer operation result is out of range
   	
 PC_GPIO1->FIOSET |= (1 << 31);
-main.c(160): warning:  #68-D: integer conversion resulted in a change of sign
+main.c(167): warning:  #68-D: integer conversion resulted in a change of sign
   	
 PC_GPIO1->FIOSET |= (1 << 31);
-main.c(187): warning:  #61-D: integer operation result is out of range
+main.c(194): warning:  #61-D: integer operation result is out of range
   			
 PC_GPIO1->FIOCLR |= (1 << 31);
-main.c(187): warning:  #68-D: integer conversion resulted in a change of sign
+main.c(194): warning:  #68-D: integer conversion resulted in a change of sign
   			
 PC_GPIO1->FIOCLR |= (1 << 31);
-main.c(198): warning:  #61-D: integer operation result is out of range
+main.c(205): warning:  #61-D: integer operation result is out of range
   			
 PC_GPIO1->FIOCLR |= (1 << 31);
-main.c(198): warning:  #68-D: integer conversion resulted in a change of sign
+main.c(205): warning:  #68-D: integer conversion resulted in a change of sign
   			
 PC_GPIO1->FIOCLR |= (1 << 31);
-main.c(212): warning:  #61-D: integer operation result is out of range
+main.c(219): warning:  #61-D: integer operation result is out of range
   			
 PC_GPIO1->FIOSET |= (1 << 31);
-main.c(212): warning:  #68-D: integer conversion resulted in a change of sign
+main.c(219): warning:  #68-D: integer conversion resulted in a change of sign
   			
 PC_GPIO1->FIOSET |= (1 << 31);
 main.c: 15 warnings, 0 errors
-compiling GLCD_SPI_LPC1700.c...
 linking...
-Program Size: Code=10316 RO-data=6740 RW-data=7356 ZI-data=12892  
+Program Size: Code=10464 RO-data=6704 RW-data=7340 ZI-data=12892  
 ".\Objects\DuckDuckGone.axf" - 0 Error(s), 15 Warning(s).
 
 <h2>Software Packages used:</h2>
@@ -122,7 +121,7 @@ Package Vendor: Keil
    * Component: ARM::CMSIS:CORE:5.1.1
 
    * Component: ::CMSIS:RTOS:1.0.0 (API)
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

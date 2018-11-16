@@ -997,39 +997,39 @@ void GLCD_Bitmap_Move (unsigned int* x, unsigned int* y, unsigned int w, unsigne
 	if (dir == None)
 		return;
 		
-	int i, j;
+	int i, j, k;
   unsigned short *bitmap_ptr = (unsigned short *)bitmap;
 	
 	unsigned int x0 = *x;
 	unsigned int y0 = *y;
 	
 	if (dir == Left) {
-		GLCD_SetWindow (x0, y0+dist, w+dist, h);
 		if( (*x) >= dist )	
 			(*x) = (*x)-dist;
 		else
 			(*x) = 0;
+		GLCD_SetWindow ((*x), (*y), w+dist, h);
 	}
 	if (dir == Right) {
-		GLCD_SetWindow (x0, y0-dist, w+dist, h);
-		if( (*x) + w < WIDTH-dist )
+		if( (*x) + w + dist < WIDTH )
 			(*x) = (*x)+dist;
 		else
-			(*x) = WIDTH-w-1;
+			(*x) = WIDTH-w;
+		GLCD_SetWindow ((*x)-dist, (*y), w+dist, h);
 	}
 	if (dir == Up) {
-		GLCD_SetWindow (x0+dist, y0, w, h+dist);
 		if( (*y) >= dist )
 			(*y) = (*y)-dist;
 		else
 			(*y) = 0;
+		GLCD_SetWindow ((*x), (*y), w, h+dist);
 	}
 	if (dir == Down) {
-		GLCD_SetWindow (x0-dist, y0, w, h+dist);
-		if( (*y) + h < HEIGHT-dist )
+		if( (*y) + h + dist < HEIGHT )
 			(*y) = (*y)+dist;
 		else
-			(*y) = HEIGHT-h-1;
+			(*y) = HEIGHT-h;
+		GLCD_SetWindow ((*x), (*y)-dist, w, h+dist);
 	}
 		
 	wr_cmd(0x22);
@@ -1037,20 +1037,24 @@ void GLCD_Bitmap_Move (unsigned int* x, unsigned int* y, unsigned int w, unsigne
 	
 	if (dir == Down)
 		for (i=0; i< w; i++)
-			wr_dat_only (Color[BG_COLOR]);
+			for (k=0; k<dist; k++)		
+				wr_dat_only (Color[BG_COLOR]);
 	
 	for (i = (h-1)*w; i > -1; i -= w) {
 		if (dir == Right)
-			wr_dat_only (Color[BG_COLOR]);
+			for (k=0; k<dist; k++)
+				wr_dat_only (Color[BG_COLOR]);
     for (j = 0; j < w; j++) {
       wr_dat_only (bitmap_ptr[i+j]);
     }
 		if (dir == Left)
-			wr_dat_only (Color[BG_COLOR]);
+			for (k=0; k<dist; k++)
+				wr_dat_only (Color[BG_COLOR]);
   }
 	if (dir == Up)
 		for (i=0; i< w; i++)
-			wr_dat_only (Color[BG_COLOR]);
+			for (k=0; k<dist; k++)
+				wr_dat_only (Color[BG_COLOR]);
 	
   wr_dat_stop();
 }
