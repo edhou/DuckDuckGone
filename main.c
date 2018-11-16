@@ -31,27 +31,28 @@ duck_t ducks[NDUCKS];
 // Misc. data
 uint32_t time;
 uint32_t score;
-unsigned char* direction;
+enum Direction crossDirection = None;
 
 // Define mutex
 osMutexDef(newFrame); // waits for background to update sprite positions
 osMutexId(newFrameID);
 
 // Function to get joystick position
-unsigned char* joystickRead(void) {
-    static unsigned char* directions[] = {"left", "up", "right", "down", "none"};
-
-    int GPIOAStatus = LPC_GPIO1->FIOPIN;
-		if(!(GPIOAStatus & (1 << 23) ) )
-			return directions[0];
-		else if(!(GPIOAStatus & (1 << 24) ) )
-			return directions[1];
-		else if(!(GPIOAStatus & (1 << 25) ) )
-			return directions[2];
-		else if(!(GPIOAStatus & (1 << 26) ) )
-			return directions[3];
-		else
-			return directions[4];
+enum Direction joystickRead(void) {
+	//Get joystick status
+	int GPIOAStatus = LPC_GPIO1->FIOPIN;
+	
+	//Determine position
+	if(!(GPIOAStatus & (1 << 23) ) )
+		return Left;
+	else if(!(GPIOAStatus & (1 << 24) ) )
+		return Up;
+	else if(!(GPIOAStatus & (1 << 25) ) )
+		return Right;
+	else if(!(GPIOAStatus & (1 << 26) ) )
+		return Down;
+	else
+		return None;
 }
 
 
@@ -89,12 +90,14 @@ void monitor(void const *arg) {
 		// Draw background
 		
 		// Draw sprites
-		GLCD_DisplayString(5, 3, 1, direction);
+		//GLCD_DisplayString(5, 3, 1, direction);
 		//GLCD_Fill((100+x)%edge,100,60,60,BACKCOL);
-		GLCD_Bitmap_Move1px(&x1,&y1,60,60,crosshair_map, Up);
+
+		GLCD_Bitmap_Move1px(&x1,&y1,60,60,crosshair_map, crossDirection);
 		//GLCD_Bitmap_Move1px(&x2,&y2,60,60,crosshair_map, Right);
 		//GLCD_Bitmap_Move1px(&x3,&y3,60,60,crosshair_map, Up);
 		//GLCD_Bitmap_Move1px(&x4,&y4,60,60,crosshair_map, Down);
+		
 		// Wait until the next frame
 		osDelay(FRAMERATE);
 	}
@@ -135,11 +138,13 @@ void aim(void const* arg) {
 		time = timer_read()/1E6;
 		deltaTime = time - previousTime;
 		previousTime = time;
-		//MovePlayer(player_speed * delta_time, joystick_read()); 
 		
-		direction = joystickRead();
+		crossDirection = joystickRead();
 		
-	  //GLCD_DisplayString(5, 3, 1, joystickRead()); //debug
+		//MovePlayer(player_speed * deltaTime, joystickRead()); 
+		
+		//direction = joystickRead();
+		
 	}
 }
 
@@ -234,6 +239,9 @@ int main(void) {
 	GLCD_Clear(0xFE40);
 	GLCD_SetBackColor(0xFE40);
 	GLCD_SetTextColor(0x4A07);
+	
+	// Initialize Timer
+	timer_setup();
 	
 	
 	GLCD_DisplayString(5, 2, 1, "DuckDuckGone");
