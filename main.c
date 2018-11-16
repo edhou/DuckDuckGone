@@ -29,12 +29,16 @@ typedef struct {
 const int NDUCKS = 6;
 duck_t ducks[NDUCKS];
 
+// Crosshair position
+unsigned int xCross=60;
+unsigned int yCross=60;
+
 // Misc. data
 uint8_t inProgress = 0;
 uint32_t time = 60;
 uint8_t fireEnable = 1; //1 = player can fire; 0 = player can't fire
 char timeDisp[6];
-uint32_t score = 0;
+uint32_t score = 0; 
 unsigned char scoreDisp[6];
 enum Direction crossDirection = None;
 uint32_t crossPixelsToMove = 0;
@@ -145,7 +149,9 @@ void monitor(void const *arg) {
 
 		
 		osMutexWait(crosshairID, osWaitForever);
-			GLCD_Bitmap_Move(&x1,&y1,60,60,crosshair_map,5,crossDirection);
+			if(!( (yCross > 160) && (crossDirection == Down) )){
+				GLCD_Bitmap_Move(&xCross,&yCross,60,60,crosshair_map,5,crossDirection);
+			}
 		osMutexRelease(crosshairID);
 		
 		//GLCD_Bitmap_Move1px(&x2,&y2,60,60,crosshair_map, Right);
@@ -205,11 +211,15 @@ void aim(void const* arg) {
 		deltaTime = time - previousTime;
 		previousTime = time;
 				
-		osMutexWait(crosshairID, osWaitForever);		
-			crossDirection = joystickRead();
-			crossPixelsToMove = crosshairSpeed * deltaTime;
+		osMutexWait(crosshairID, osWaitForever);
+			if(!( (yCross > 160) && (joystickRead()==Down) )){
+				crossDirection = joystickRead();
+				crossPixelsToMove = crosshairSpeed * deltaTime;
+			}
+			else{
+				crossDirection = None;
+			}
 		osMutexRelease(crosshairID);
-				
 		
 	}
 }
