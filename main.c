@@ -7,6 +7,7 @@
 #include "GLCD.h"
 #include "crosshair.h"
 #include "timer.h"
+#include <string.h>
 
 // Yann Roberge - yroberge
 // Edward Hou - ehou
@@ -29,9 +30,16 @@ const int NDUCKS = 6;
 duck_t ducks[NDUCKS];
 
 // Misc. data
-uint32_t time;
-uint32_t score;
+uint8_t inProgress = 0;
+uint32_t time = 60;
+uint8_t fireEnable = 1; //1 = player can fire; 0 = player can't fire
+char timeDisp[6];
+uint32_t score = 0;
+unsigned char scoreDisp[6];
 enum Direction crossDirection = None;
+uint32_t crossPixelsToMove;
+
+
 
 // Define mutex
 osMutexDef(newFrame); // waits for background to update sprite positions
@@ -58,19 +66,32 @@ enum Direction joystickRead(void) {
 		return None;
 }
 
+// Function to reset LED screen
+void showResult(void){
+	osDelay(3000);
+	GLCD_SetBackColor(0x6DEB);
+	GLCD_SetTextColor(0x2A49);
+	GLCD_Clear(0x6DEB);
+	
+	GLCD_DisplayString(3, 3, 1, "Game Over");	
+	GLCD_DisplayString(6, 1, 1, "Your Score:");	
+	sprintf(scoreDisp, "%d", score);
+	GLCD_DisplayString(7, 1, 1, scoreDisp);	
+}
 
 // Define performance 
 const uint32_t TICKSPEED = 200; // 200 ticks per second
-const uint32_t SECOND = 1000; // 1000 ms in a second - needs 7000 to be close to a second
+const uint32_t SECOND = 3000; // 1000 ms in a second - needs 7000 to be close to a second
 const uint32_t FPS = 60;
 const uint32_t FRAMERATE = SECOND/FPS;
 const uint32_t delayLED = 5000;
+const uint32_t crosshairSpeed = 5;
 
 
 void monitor(void const *arg) {
 	
-	GLCD_DisplayString(300, 1, 1, "Score: ");
-	GLCD_DisplayString(300, 10, 1, "Time: ");
+	GLCD_DisplayString(1, 1, 1, "Score: ");
+	GLCD_DisplayString(2, 1, 1, "Time: ");
 	
 	GLCD_WindowMax();
 	
@@ -86,7 +107,15 @@ void monitor(void const *arg) {
 	unsigned int x4=60;
 	unsigned int y4=60;
 	
-	while(1) {
+	while(inProgress == 1) {
+		// Update score and time
+		sprintf(scoreDisp, "%d", score);
+		GLCD_DisplayString(1, 7, 1, scoreDisp);	
+		
+		sprintf(timeDisp, "%d", time);
+		GLCD_DisplayString(2, 7, 1, timeDisp);	
+		if(time < 10)
+			GLCD_DisplayString(2, 8, 1, " ");	
 		
 		// Use mutex to pull array of sprites
 		
@@ -106,6 +135,7 @@ void monitor(void const *arg) {
 		// Wait until the next frame
 		osDelay(FRAMERATE);
 	}
+	
 }
 
 void background(void const* arg) {
@@ -125,8 +155,14 @@ void background(void const* arg) {
 	
 	//osMutexRelease(newFrameID);
 	
-	while(1) {
-		osDelay(1000);
+	while(inProgress == 1) {
+		osDelay(SECOND);
+		time--;
+		if (time == 0){
+			inProgress = 0;
+			fireEnable = 0;
+			showResult();
+		}
 	}
 }
 
@@ -140,19 +176,17 @@ void aim(void const* arg) {
 	previousTime = time;
 
 	// Loop
-	while(1) {
+	while(inProgress == 1) {
 		
 		time = timer_read()/1E6;
 		deltaTime = time - previousTime;
 		previousTime = time;
-		
+				
 		osMutexWait(crosshairID, osWaitForever);		
-		crossDirection = joystickRead();
+			crossDirection = joystickRead();
+			crossPixelsToMove = crosshairSpeed * deltaTime;
 		osMutexRelease(crosshairID);
-		
-		//MovePlayer(player_speed * deltaTime, joystickRead()); 
-		
-		//direction = joystickRead();
+				
 		
 	}
 }
@@ -164,8 +198,7 @@ void fire(void const* arg) {
 	LPC_GPIO2->FIODIR |= 0x0000007C; // bits 2 to 6 set as outputs
 	
 	
-	uint8_t fireEnable = 1; //1 = player can fire; 0 = player can't fire
-	
+	fireEnable = 1; //1 = player can fire; 0 = player can't fire
 	
 	// Inital condition: All LEDs on
 	
@@ -179,7 +212,7 @@ void fire(void const* arg) {
 	LPC_GPIO2->FIOSET |= (1 << 5);
 	LPC_GPIO2->FIOSET |= (1 << 6);	
 	
-	while(1){	
+	while(inProgress == 1){	
 		
 		if(fireEnable == 1){
 			// wait for button press
@@ -191,51 +224,53 @@ void fire(void const* arg) {
 				
 			// do stuff on release
 			
-			//shoot();
-			GLCD_DisplayString(4, 3, 1, "fire"); //debug
-			
-			fireEnable = 0;
-			
-			LPC_GPIO1->FIOCLR |= (1 << 28);
-			LPC_GPIO1->FIOCLR |= (1 << 29);
-			LPC_GPIO1->FIOCLR |= (1 << 31);
+			//if(inProgress == 1){ //confirm in progress
+				//shoot();
+				GLCD_DisplayString(4, 3, 1, "fire"); //debug
+				
+				fireEnable = 0;
+				
+				LPC_GPIO1->FIOCLR |= (1 << 28);
+				LPC_GPIO1->FIOCLR |= (1 << 29);
+				LPC_GPIO1->FIOCLR |= (1 << 31);
 
-			LPC_GPIO2->FIOCLR |= (1 << 2);
-			LPC_GPIO2->FIOCLR |= (1 << 3);
-			LPC_GPIO2->FIOCLR |= (1 << 4);
-			LPC_GPIO2->FIOCLR |= (1 << 5);
-			LPC_GPIO2->FIOCLR |= (1 << 6);
-			
-			// clear all LEDs	
-			LPC_GPIO1->FIOCLR |= (1 << 28);
-			LPC_GPIO1->FIOCLR |= (1 << 29);
-			LPC_GPIO1->FIOCLR |= (1 << 31);
+				LPC_GPIO2->FIOCLR |= (1 << 2);
+				LPC_GPIO2->FIOCLR |= (1 << 3);
+				LPC_GPIO2->FIOCLR |= (1 << 4);
+				LPC_GPIO2->FIOCLR |= (1 << 5);
+				LPC_GPIO2->FIOCLR |= (1 << 6);
+				
+				// clear all LEDs	
+				LPC_GPIO1->FIOCLR |= (1 << 28);
+				LPC_GPIO1->FIOCLR |= (1 << 29);
+				LPC_GPIO1->FIOCLR |= (1 << 31);
 
-			LPC_GPIO2->FIOCLR |= (1 << 2);
-			LPC_GPIO2->FIOCLR |= (1 << 3);
-			LPC_GPIO2->FIOCLR |= (1 << 4);
-			LPC_GPIO2->FIOCLR |= (1 << 5);
-			LPC_GPIO2->FIOCLR |= (1 << 6);
+				LPC_GPIO2->FIOCLR |= (1 << 2);
+				LPC_GPIO2->FIOCLR |= (1 << 3);
+				LPC_GPIO2->FIOCLR |= (1 << 4);
+				LPC_GPIO2->FIOCLR |= (1 << 5);
+				LPC_GPIO2->FIOCLR |= (1 << 6);
+				
+				osDelay(delayLED);
+				GLCD_DisplayString(4, 3, 1, "    "); //debug
+				LPC_GPIO1->FIOSET |= (1 << 28);	
+				osDelay(delayLED);
+				LPC_GPIO1->FIOSET |= (1 << 29);
+				osDelay(delayLED);
+				LPC_GPIO1->FIOSET |= (1 << 31);
+				osDelay(delayLED);
+				LPC_GPIO2->FIOSET |= (1 << 2);
+				osDelay(delayLED);
+				LPC_GPIO2->FIOSET |= (1 << 3);
+				osDelay(delayLED);
+				LPC_GPIO2->FIOSET |= (1 << 4);
+				osDelay(delayLED);
+				LPC_GPIO2->FIOSET |= (1 << 5);
+				osDelay(delayLED);
+				LPC_GPIO2->FIOSET |= (1 << 6);
 			
-			osDelay(delayLED);
-			GLCD_DisplayString(4, 3, 1, "    "); //debug
-			LPC_GPIO1->FIOSET |= (1 << 28);	
-			osDelay(delayLED);
-			LPC_GPIO1->FIOSET |= (1 << 29);
-			osDelay(delayLED);
-			LPC_GPIO1->FIOSET |= (1 << 31);
-			osDelay(delayLED);
-			LPC_GPIO2->FIOSET |= (1 << 2);
-			osDelay(delayLED);
-			LPC_GPIO2->FIOSET |= (1 << 3);
-			osDelay(delayLED);
-			LPC_GPIO2->FIOSET |= (1 << 4);
-			osDelay(delayLED);
-			LPC_GPIO2->FIOSET |= (1 << 5);
-			osDelay(delayLED);
-			LPC_GPIO2->FIOSET |= (1 << 6);
-		
-			fireEnable = 1;
+				fireEnable = 1;
+			//}
 		}
 	}
 }
@@ -267,6 +302,9 @@ int main(void) {
 	GLCD_Clear(BACKCOL);
 	GLCD_SetBackColor(BACKCOL);
 	GLCD_SetTextColor(0xE77D);
+	
+	osDelay(2500); //delay to allow screen to clear 
+	inProgress = 1;
 	
 	// Thread definitions
 	osThreadDef(monitor, osPriorityNormal, 1, 0); 
