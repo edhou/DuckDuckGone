@@ -5,7 +5,7 @@
 <h2>Tool Versions:</h2>
 IDE-Version: µVision V5.24.2.0
 Copyright (C) 2017 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: Eric Praetzel, ECE Dept, LIC=----
+License Information: Eric Praetzel, ECE DEpt, LIC=----
  
 Tool Versions:
 Toolchain:       MDK-Lite  Version: 5.24.1
@@ -22,12 +22,56 @@ Dialog DLL:      TCM.DLL V1.32.0.0
  
 <h2>Project:</h2>
 N:\MTE241\DuckDuckGone\DuckDuckGone.uvprojx
-Project File Date:  11/14/2018
+Project File Date:  11/16/2018
 
 <h2>Output:</h2>
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Software\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
-".\Objects\DuckDuckGone.axf" - 0 Error(s), 0 Warning(s).
+compiling main.c...
+main.c(78): warning:  #177-D: variable "x2"  was declared but never referenced
+  	unsigned int x2=120;
+main.c(79): warning:  #177-D: variable "y2"  was declared but never referenced
+  	unsigned int y2=60;
+main.c(80): warning:  #177-D: variable "x3"  was declared but never referenced
+  	unsigned int x3=150;
+main.c(81): warning:  #177-D: variable "y3"  was declared but never referenced
+  	unsigned int y3=60;
+main.c(82): warning:  #177-D: variable "x4"  was declared but never referenced
+  	unsigned int x4=60;
+main.c(83): warning:  #177-D: variable "y4"  was declared but never referenced
+  	unsigned int y4=60;
+main.c(149): warning:  #61-D: integer operation result is out of range
+  	
+PC_GPIO1->FIODIR |= ((1 << 28) | (1 << 29) | (1 << 31)); // bits 28, 29, 31 set as outputs
+main.c(160): warning:  #61-D: integer operation result is out of range
+  	
+PC_GPIO1->FIOSET |= (1 << 31);
+main.c(160): warning:  #68-D: integer conversion resulted in a change of sign
+  	
+PC_GPIO1->FIOSET |= (1 << 31);
+main.c(187): warning:  #61-D: integer operation result is out of range
+  			
+PC_GPIO1->FIOCLR |= (1 << 31);
+main.c(187): warning:  #68-D: integer conversion resulted in a change of sign
+  			
+PC_GPIO1->FIOCLR |= (1 << 31);
+main.c(198): warning:  #61-D: integer operation result is out of range
+  			
+PC_GPIO1->FIOCLR |= (1 << 31);
+main.c(198): warning:  #68-D: integer conversion resulted in a change of sign
+  			
+PC_GPIO1->FIOCLR |= (1 << 31);
+main.c(212): warning:  #61-D: integer operation result is out of range
+  			
+PC_GPIO1->FIOSET |= (1 << 31);
+main.c(212): warning:  #68-D: integer conversion resulted in a change of sign
+  			
+PC_GPIO1->FIOSET |= (1 << 31);
+main.c: 15 warnings, 0 errors
+compiling GLCD_SPI_LPC1700.c...
+linking...
+Program Size: Code=10316 RO-data=6740 RW-data=7356 ZI-data=12892  
+".\Objects\DuckDuckGone.axf" - 0 Error(s), 15 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -56,29 +100,29 @@ Package Vendor: Keil
 
    * Component: Keil::Device:Startup:1.0.0
       Include file:  RTE_Driver\Config\RTE_Device.h
+      Source file:   Device\Source\system_LPC17xx.c
       Source file:   Device\Source\ARM\startup_LPC17xx.s
       Include file:  Device\Include\LPC17xx.h
-      Source file:   Device\Source\system_LPC17xx.c
 
    * Component: ARM::CMSIS:RTOS:Keil RTX:4.81.1
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Mutex.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Semaphore.c
-      Source file:   CMSIS\RTOS\RTX\Templates\RTX_Conf_CM.c
-      Library file:  CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\main.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MemPool.c
-      Include file:  CMSIS\RTOS\RTX\UserCodeTemplates\osObjects.h
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MsgQueue.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Timer.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MailQueue.c
       Include file:  CMSIS\RTOS\RTX\INC\cmsis_os.h
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Thread.c
+      Source file:   CMSIS\RTOS\RTX\Templates\RTX_Conf_CM.c
+      Include file:  CMSIS\RTOS\RTX\UserCodeTemplates\osObjects.h
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MailQueue.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\main.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Mutex.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MsgQueue.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MemPool.c
       Source file:   CMSIS\RTOS\RTX\SRC\ARM\SVC_Table.s
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Timer.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Thread.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Semaphore.c
+      Library file:  CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib
 
    * Component: ARM::CMSIS:CORE:5.1.1
 
    * Component: ::CMSIS:RTOS:1.0.0 (API)
-Build Time Elapsed:  00:00:01
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

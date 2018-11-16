@@ -920,11 +920,15 @@ void GLCD_Bitmap (unsigned int x, unsigned int y, unsigned int w, unsigned int h
 *                   w:        width of bitmap                                  *
 *                   h:        height of bitmap                                 *
 *                   bitmap:   address at which the bitmap data resides         *
+*                   dir:   		direction to move the sprite in         				 *
 *   Return:                                                                    *
 *******************************************************************************/
 
 void GLCD_Bitmap_Move1px (unsigned int* x, unsigned int* y, unsigned int w, unsigned int h, unsigned char *bitmap, enum Direction dir) {
   
+	if (dir == None)
+		return;
+	
 	int i, j;
   unsigned short *bitmap_ptr = (unsigned short *)bitmap;
 	
@@ -942,7 +946,7 @@ void GLCD_Bitmap_Move1px (unsigned int* x, unsigned int* y, unsigned int w, unsi
 			(*x) = (*x)+1;
 	}
 	if (dir == Up) {
-		GLCD_SetWindow (x0+1, y0-1, w, h+1);
+		GLCD_SetWindow (x0+1, y0, w, h+1);
 		if( (*y) > 0 )
 			(*y) = (*y)-1;
 	}
@@ -973,19 +977,82 @@ void GLCD_Bitmap_Move1px (unsigned int* x, unsigned int* y, unsigned int w, unsi
 			wr_dat_only (Color[BG_COLOR]);
 	
   wr_dat_stop();
+}
+
+/*******************************************************************************
+* Display graphical bitmap image at position x horizontally and y vertically   *
+* (This function is optimized for 16 bits per pixel format, it has to be       *
+*  adapted for any other bits per pixel format)                                *
+*   Parameter:      x:        horizontal position                              *
+*                   y:        vertical position                                *
+*                   w:        width of bitmap                                  *
+*                   h:        height of bitmap                                 *
+*                   bitmap:   address at which the bitmap data resides         *
+*                   dir:   		direction to move the sprite in         				 *
+*   Return:                                                                    *
+*******************************************************************************/
+
+void GLCD_Bitmap_Move (unsigned int* x, unsigned int* y, unsigned int w, unsigned int h, unsigned char *bitmap, unsigned int dist, enum Direction dir) {
 	
-//  wr_cmd(0x22);
-//  wr_dat_start();
-//  for (i = (h-1)*w; i > -1; i -= w) {
-//    for (j = 0; j < w; j++) {
-//			unsigned short pix = bitmap_ptr[i+j];
-//			if(pix == 0x041f)
-//				;
-//			else
-//				wr_dat_only (pix);
-//    }
-//  }
-//  wr_dat_stop();
+	if (dir == None)
+		return;
+		
+	int i, j;
+  unsigned short *bitmap_ptr = (unsigned short *)bitmap;
+	
+	unsigned int x0 = *x;
+	unsigned int y0 = *y;
+	
+	if (dir == Left) {
+		GLCD_SetWindow (x0, y0+dist, w+dist, h);
+		if( (*x) >= dist )	
+			(*x) = (*x)-dist;
+		else
+			(*x) = 0;
+	}
+	if (dir == Right) {
+		GLCD_SetWindow (x0, y0-dist, w+dist, h);
+		if( (*x) + w < WIDTH-dist )
+			(*x) = (*x)+dist;
+		else
+			(*x) = WIDTH-w-1;
+	}
+	if (dir == Up) {
+		GLCD_SetWindow (x0+dist, y0, w, h+dist);
+		if( (*y) >= dist )
+			(*y) = (*y)-dist;
+		else
+			(*y) = 0;
+	}
+	if (dir == Down) {
+		GLCD_SetWindow (x0-dist, y0, w, h+dist);
+		if( (*y) + h < HEIGHT-dist )
+			(*y) = (*y)+dist;
+		else
+			(*y) = HEIGHT-h-1;
+	}
+		
+	wr_cmd(0x22);
+  wr_dat_start();
+	
+	if (dir == Down)
+		for (i=0; i< w; i++)
+			wr_dat_only (Color[BG_COLOR]);
+	
+	for (i = (h-1)*w; i > -1; i -= w) {
+		if (dir == Right)
+			wr_dat_only (Color[BG_COLOR]);
+    for (j = 0; j < w; j++) {
+      wr_dat_only (bitmap_ptr[i+j]);
+    }
+		if (dir == Left)
+			wr_dat_only (Color[BG_COLOR]);
+  }
+	if (dir == Up)
+		for (i=0; i< w; i++)
+			wr_dat_only (Color[BG_COLOR]);
+	
+  wr_dat_stop();
 }
 
 /*******************************************************************************

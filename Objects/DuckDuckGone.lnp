@@ -5,6 +5,7 @@
 ".\objects\random.o"
 ".\objects\retarget.o"
 ".\objects\uart.o"
+".\objects\timer.o"
 "C:\Software\Keil_v5\ARM\PACK\ARM\CMSIS\5.3.0\CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib"
 ".\objects\rtx_conf_cm.o"
 ".\objects\startup_lpc17xx.o"
