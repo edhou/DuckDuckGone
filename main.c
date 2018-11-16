@@ -62,7 +62,7 @@ enum Direction joystickRead(void) {
 // Define performance 
 const uint32_t TICKSPEED = 200; // 200 ticks per second
 const uint32_t SECOND = 1000; // 1000 ms in a second - needs 7000 to be close to a second
-const uint32_t FPS = 60;
+const uint32_t FPS = 120;
 const uint32_t FRAMERATE = SECOND/FPS;
 const uint32_t delayLED = 5000;
 
@@ -96,12 +96,8 @@ void monitor(void const *arg) {
 		//GLCD_DisplayString(5, 3, 1, direction);
 		//GLCD_Fill((100+x)%edge,100,60,60,BACKCOL);
 
-		//GLCD_Bitmap_Move1px(&x1,&y1,60,60,crosshair_map, crossDirection);
-		GLCD_Bitmap_Move(&x1,&y1,60,60,crosshair_map,5,crossDirection);
+		GLCD_Bitmap_Move(&x1,&y1,60,60,crosshair_map,2,crossDirection);
 		//printf("%d %d\n", x1, y1);
-		//GLCD_Bitmap_Move1px(&x2,&y2,60,60,crosshair_map, Right);
-		//GLCD_Bitmap_Move1px(&x3,&y3,60,60,crosshair_map, Up);
-		//GLCD_Bitmap_Move1px(&x4,&y4,60,60,crosshair_map, Down);
 		
 		// Wait until the next frame
 		osDelay(FRAMERATE);

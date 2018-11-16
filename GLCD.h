@@ -64,6 +64,8 @@ extern void GLCD_Bitmap         (unsigned int x,  unsigned int y, unsigned int w
 // Function created by lab partners: GLCD_Fill, GLCD_Bitmap_Move1px, GLCD_Bitmap_Move
 extern void GLCD_Fill						(unsigned int x,  unsigned int y, unsigned int w, unsigned int h, unsigned short colour);
 extern void GLCD_Bitmap_Move (unsigned int* x, unsigned int* y, unsigned int w, unsigned int h, unsigned char *bitmap, unsigned int dist, enum Direction dir);
+extern void GLCD_DisplayCharPrecise (unsigned int x, unsigned int y, unsigned char fi, unsigned char c);
+extern void GLCD_DisplayStringPrecise (unsigned int x, unsigned int y, unsigned char fi, unsigned char *s);
 
 extern void GLCD_ScrollVertical (unsigned int dy);
 

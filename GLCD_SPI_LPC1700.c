@@ -809,6 +809,43 @@ void GLCD_DisplayChar (unsigned int ln, unsigned int col, unsigned char fi, unsi
   }
 }
 
+/*******************************************************************************
+* Disply character on given line                                               *
+*   Parameter:      ln:       line number                                      *
+*                   col:      column number                                    *
+*                   fi:       font index (0 = 6x8, 1 = 16x24)                  *
+*                   c:        ascii character                                  *
+*   Return:                                                                    *
+*******************************************************************************/
+
+void GLCD_DisplayCharPrecise (unsigned int x, unsigned int y, unsigned char fi, unsigned char c) {
+
+  c -= 32;
+  switch (fi) {
+    case 0:  /* Font 6 x 8 */
+      GLCD_DrawChar(y, x,  6,  8, (unsigned char *)&Font_6x8_h  [c * 8]);
+      break;
+    case 1:  /* Font 16 x 24 */
+      GLCD_DrawChar(y, x, 16, 24, (unsigned char *)&Font_16x24_h[c * 24]);
+      break;
+  }
+}
+
+/*******************************************************************************
+* Disply string on given position in pixels                                                  *
+*   Parameter:      ln:       line number                                      *
+*                   col:      column number                                    *
+*                   fi:       font index (0 = 6x8, 1 = 16x24)                  *
+*                   s:        pointer to string                                *
+*   Return:                                                                    *
+*******************************************************************************/
+
+void GLCD_DisplayStringPrecise (unsigned int x, unsigned int y, unsigned char fi, unsigned char *s) {
+
+  while (*s) {
+    GLCD_DisplayCharPrecise(x, y++, fi, *s++);
+  }
+}
 
 /*******************************************************************************
 * Disply string on given line                                                  *

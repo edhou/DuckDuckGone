@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\DuckDuckGone.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\DuckDuckGone.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Fri Nov 16 15:49:59 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Fri Nov 16 16:09:02 2018
 <BR><P>
 <H3>Maximum Stack Usage =        232 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -1071,8 +1071,8 @@ Global Symbols
 <P><STRONG><a name="[31]"></a>svcDelay</STRONG> (Thumb, 18 bytes, Stack size 8 bytes, rt_cmsis.o(i.svcDelay))
 <BR><BR>[Stack]<UL><LI>Max Depth = 32<LI>Call Chain = svcDelay &rArr; rt_dly_wait &rArr; rt_block &rArr; rt_put_dly
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_ms2tick
-<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_dly_wait
+<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_dly_wait
+<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_ms2tick
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rt_cmsis.o(i.osDelay)
 </UL>
@@ -1107,8 +1107,8 @@ Global Symbols
 <P><STRONG><a name="[34]"></a>svcMessageGet</STRONG> (Thumb, 58 bytes, Stack size 24 bytes, rt_cmsis.o(i.svcMessageGet))
 <BR><BR>[Stack]<UL><LI>Max Depth = 68<LI>Call Chain = svcMessageGet &rArr; rt_mbx_wait &rArr; rt_dispatch &rArr; rt_put_prio
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_ms2tick
-<LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mbx_wait
+<BR>[Calls]<UL><LI><a href="#[8f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mbx_wait
+<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_ms2tick
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rt_cmsis.o(i.osMessageGet)
 </UL>
@@ -1124,17 +1124,17 @@ Global Symbols
 <P><STRONG><a name="[36]"></a>svcMutexRelease</STRONG> (Thumb, 34 bytes, Stack size 8 bytes, rt_cmsis.o(i.svcMutexRelease))
 <BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = svcMutexRelease &rArr; rt_mut_release &rArr; rt_dispatch &rArr; rt_put_prio
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_id2obj
-<LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mut_release
+<BR>[Calls]<UL><LI><a href="#[90]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mut_release
+<LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_id2obj
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rt_cmsis.o(i.osMutexRelease)
 </UL>
 <P><STRONG><a name="[37]"></a>svcMutexWait</STRONG> (Thumb, 58 bytes, Stack size 16 bytes, rt_cmsis.o(i.svcMutexWait))
 <BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = svcMutexWait &rArr; rt_mut_wait &rArr; rt_block &rArr; rt_put_dly
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_ms2tick
+<BR>[Calls]<UL><LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mut_wait
+<LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_ms2tick
 <LI><a href="#[a7]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_id2obj
-<LI><a href="#[91]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mut_wait
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rt_cmsis.o(i.osMutexWait)
 </UL>
@@ -1160,9 +1160,9 @@ Global Symbols
 <P><STRONG><a name="[3a]"></a>svcThreadTerminate</STRONG> (Thumb, 50 bytes, Stack size 8 bytes, rt_cmsis.o(i.svcThreadTerminate))
 <BR><BR>[Stack]<UL><LI>Max Depth = 76<LI>Call Chain = svcThreadTerminate &rArr; rt_tsk_delete &rArr; rt_dispatch &rArr; rt_put_prio
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_tid2ptcb
-<LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_tsk_delete
+<BR>[Calls]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_tsk_delete
 <LI><a href="#[a9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_free_mem
+<LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_tid2ptcb
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> rt_cmsis.o(i.osThreadExit)
 </UL>
@@ -1176,9 +1176,9 @@ Global Symbols
 <P><STRONG><a name="[9c]"></a>sysTimerTick</STRONG> (Thumb, 84 bytes, Stack size 24 bytes, rt_cmsis.o(i.sysTimerTick))
 <BR><BR>[Stack]<UL><LI>Max Depth = 64<LI>Call Chain = sysTimerTick &rArr; isrMessagePut &rArr; isr_mbx_send &rArr; rt_psq_enq
 </UL>
-<BR>[Calls]<UL><LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_timer_insert
-<LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;os_error
+<BR>[Calls]<UL><LI><a href="#[8e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;os_error
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;isrMessagePut
+<LI><a href="#[ac]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_timer_insert
 </UL>
 <BR>[Called By]<UL><LI><a href="#[4d]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_systick
 </UL>
