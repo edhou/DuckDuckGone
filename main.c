@@ -37,7 +37,7 @@ char timeDisp[6];
 uint32_t score = 0;
 unsigned char scoreDisp[6];
 enum Direction crossDirection = None;
-uint32_t crossPixelsToMove;
+uint32_t crossPixelsToMove = 0;
 
 
 
@@ -66,7 +66,7 @@ enum Direction joystickRead(void) {
 		return None;
 }
 
-// Function to reset LED screen
+// Function to end game and show score
 void showResult(void){
 	osDelay(3000);
 	GLCD_SetBackColor(0x6DEB);
@@ -77,6 +77,22 @@ void showResult(void){
 	GLCD_DisplayString(6, 1, 1, "Your Score:");	
 	sprintf(scoreDisp, "%d", score);
 	GLCD_DisplayString(7, 1, 1, scoreDisp);	
+}
+
+// Function to end game and show score
+void restartGame(void){
+	osDelay(3000);
+	GLCD_Clear(BACKCOL);
+	GLCD_SetBackColor(BACKCOL);
+	GLCD_SetTextColor(0xE77D);
+	
+	osDelay(2500); //delay to allow screen to clear 
+	
+	inProgress = 1;
+	time = 60;
+	
+	GLCD_DisplayString(1, 1, 1, "Score: ");
+	GLCD_DisplayString(2, 1, 1, "Time: ");
 }
 
 // Define performance 
@@ -107,6 +123,7 @@ void monitor(void const *arg) {
 	unsigned int x4=60;
 	unsigned int y4=60;
 	
+	while(1){
 	while(inProgress == 1) {
 		// Update score and time
 		sprintf(scoreDisp, "%d", score);
@@ -125,9 +142,11 @@ void monitor(void const *arg) {
 		//GLCD_DisplayString(5, 3, 1, direction);
 		//GLCD_Fill((100+x)%edge,100,60,60,BACKCOL);
 
-		//GLCD_Bitmap_Move1px(&x1,&y1,60,60,crosshair_map, crossDirection);
-		GLCD_Bitmap_Move(&x1,&y1,60,60,crosshair_map,5,crossDirection);
-		//printf("%d %d\n", x1, y1);
+		
+		osMutexWait(crosshairID, osWaitForever);
+			GLCD_Bitmap_Move(&x1,&y1,60,60,crosshair_map,5,crossDirection);
+		osMutexRelease(crosshairID);
+		
 		//GLCD_Bitmap_Move1px(&x2,&y2,60,60,crosshair_map, Right);
 		//GLCD_Bitmap_Move1px(&x3,&y3,60,60,crosshair_map, Up);
 		//GLCD_Bitmap_Move1px(&x4,&y4,60,60,crosshair_map, Down);
@@ -135,6 +154,7 @@ void monitor(void const *arg) {
 		// Wait until the next frame
 		osDelay(FRAMERATE);
 	}
+}
 	
 }
 
@@ -154,7 +174,7 @@ void background(void const* arg) {
 	// Create dead duck
 	
 	//osMutexRelease(newFrameID);
-	
+	while(1){
 	while(inProgress == 1) {
 		osDelay(SECOND);
 		time--;
@@ -164,6 +184,7 @@ void background(void const* arg) {
 			showResult();
 		}
 	}
+}
 }
 
 void aim(void const* arg) {
@@ -176,6 +197,7 @@ void aim(void const* arg) {
 	previousTime = time;
 
 	// Loop
+	while(1){
 	while(inProgress == 1) {
 		
 		time = timer_read()/1E6;
@@ -189,6 +211,7 @@ void aim(void const* arg) {
 				
 		
 	}
+}
 }
 
 void fire(void const* arg) {
@@ -212,6 +235,7 @@ void fire(void const* arg) {
 	LPC_GPIO2->FIOSET |= (1 << 5);
 	LPC_GPIO2->FIOSET |= (1 << 6);	
 	
+	while(1){
 	while(inProgress == 1){	
 		
 		if(fireEnable == 1){
@@ -224,7 +248,7 @@ void fire(void const* arg) {
 				
 			// do stuff on release
 			
-			//if(inProgress == 1){ //confirm in progress
+			if(inProgress == 1){ //confirm in progress
 				//shoot();
 				GLCD_DisplayString(4, 3, 1, "fire"); //debug
 				
@@ -270,9 +294,20 @@ void fire(void const* arg) {
 				LPC_GPIO2->FIOSET |= (1 << 6);
 			
 				fireEnable = 1;
-			//}
+			}
 		}
+		
+		while(inProgress == 0){	
+			// if button not pressed, wait for it to be pressed
+			while (LPC_GPIO2->FIOPIN & (1 << 10));
+			// if button pressed, wait for it to be released
+			while (!(LPC_GPIO2->FIOPIN & (1 << 10)));
+			
+			restartGame();
+		}
+		
 	}
+}
 }
 
 
