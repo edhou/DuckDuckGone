@@ -37,6 +37,9 @@ enum Direction crossDirection = None;
 osMutexDef(newFrame); // waits for background to update sprite positions
 osMutexId(newFrameID);
 
+osMutexDef(crosshair);
+osMutexId(crosshairID);
+
 // Function to get joystick position
 enum Direction joystickRead(void) {
 	//Get joystick status
@@ -127,6 +130,8 @@ void background(void const* arg) {
 
 void aim(void const* arg) {
 	
+	crosshairID = osMutexCreate(osMutex(crosshair));
+	
 	float previousTime = 0;
 	float time = timer_read()/1E6;
 	float deltaTime = time - previousTime;
@@ -139,7 +144,9 @@ void aim(void const* arg) {
 		deltaTime = time - previousTime;
 		previousTime = time;
 		
+		osMutexWait(crosshairID, osWaitForever);		
 		crossDirection = joystickRead();
+		osMutexRelease(crosshairID);
 		
 		//MovePlayer(player_speed * deltaTime, joystickRead()); 
 		
@@ -244,8 +251,11 @@ int main(void) {
 	timer_setup();
 	
 	
-	GLCD_DisplayString(5, 2, 1, "DuckDuckGone");
-	GLCD_DisplayString(9, 1, 1, "INT0 to Begin");
+	GLCD_DisplayString(3, 2, 1, "Duck");
+	GLCD_DisplayString(4, 5, 1, "Duck");
+	GLCD_DisplayString(5, 8, 1, "Gone");
+	GLCD_DisplayString(9, 0, 1, "===============");
+	GLCD_DisplayString(11, 1, 1, "INT0 to Begin");
 	
 	// if button not pressed, wait for it to be pressed
 	while (LPC_GPIO2->FIOPIN & (1 << 10));
