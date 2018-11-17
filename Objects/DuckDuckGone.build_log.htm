@@ -28,55 +28,47 @@ Project File Date:  11/16/2018
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Software\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
 compiling main.c...
-main.c(82): warning:  #177-D: variable "x2"  was declared but never referenced
-  	unsigned int x2=120;
-main.c(83): warning:  #177-D: variable "y2"  was declared but never referenced
-  	unsigned int y2=60;
-main.c(84): warning:  #177-D: variable "x3"  was declared but never referenced
-  	unsigned int x3=150;
-main.c(85): warning:  #177-D: variable "y3"  was declared but never referenced
-  	unsigned int y3=60;
-main.c(86): warning:  #177-D: variable "x4"  was declared but never referenced
-  	unsigned int x4=60;
-main.c(87): warning:  #177-D: variable "y4"  was declared but never referenced
-  	unsigned int y4=60;
-main.c(163): warning:  #61-D: integer operation result is out of range
+main.c(77): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "char *restrict"
+  	sprintf(scoreDisp, "%d", score);
+main.c(132): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "char *restrict"
+  		sprintf(scoreDisp, "%d", score);
+main.c(136): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "unsigned char *"
+  		GLCD_DisplayString(2, 7, 1, timeDisp);	
+main.c(116): warning:  #177-D: variable "xBGnd"  was declared but never referenced
+  	int xBGnd=0, yBGnd=0;
+main.c(116): warning:  #177-D: variable "yBGnd"  was declared but never referenced
+  	int xBGnd=0, yBGnd=0;
+main.c(218): warning:  #61-D: integer operation result is out of range
   	
 PC_GPIO1->FIODIR |= ((1 << 28) | (1 << 29) | (1 << 31)); // bits 28, 29, 31 set as outputs
-main.c(174): warning:  #61-D: integer operation result is out of range
+main.c(228): warning:  #61-D: integer operation result is out of range
   	
 PC_GPIO1->FIOSET |= (1 << 31);
-main.c(174): warning:  #68-D: integer conversion resulted in a change of sign
+main.c(228): warning:  #68-D: integer conversion resulted in a change of sign
   	
 PC_GPIO1->FIOSET |= (1 << 31);
-main.c(201): warning:  #61-D: integer operation result is out of range
-  			
+main.c(257): warning:  #61-D: integer operation result is out of range
+  				
 PC_GPIO1->FIOCLR |= (1 << 31);
-main.c(201): warning:  #68-D: integer conversion resulted in a change of sign
-  			
+main.c(257): warning:  #68-D: integer conversion resulted in a change of sign
+  				
 PC_GPIO1->FIOCLR |= (1 << 31);
-main.c(212): warning:  #61-D: integer operation result is out of range
-  			
+main.c(268): warning:  #61-D: integer operation result is out of range
+  				
 PC_GPIO1->FIOCLR |= (1 << 31);
-main.c(212): warning:  #68-D: integer conversion resulted in a change of sign
-  			
+main.c(268): warning:  #68-D: integer conversion resulted in a change of sign
+  				
 PC_GPIO1->FIOCLR |= (1 << 31);
-main.c(226): warning:  #61-D: integer operation result is out of range
-  			
+main.c(282): warning:  #61-D: integer operation result is out of range
+  				
 PC_GPIO1->FIOSET |= (1 << 31);
-main.c(226): warning:  #68-D: integer conversion resulted in a change of sign
-  			
+main.c(282): warning:  #68-D: integer conversion resulted in a change of sign
+  				
 PC_GPIO1->FIOSET |= (1 << 31);
-main.c: 15 warnings, 0 errors
-compiling GLCD_SPI_LPC1700.c...
-GLCD_SPI_LPC1700.c(972): warning:  #177-D: variable "x0"  was declared but never referenced
-  	unsigned int x0 = *x;
-GLCD_SPI_LPC1700.c(973): warning:  #177-D: variable "y0"  was declared but never referenced
-  	unsigned int y0 = *y;
-GLCD_SPI_LPC1700.c: 2 warnings, 0 errors
+main.c: 14 warnings, 0 errors
 linking...
-Program Size: Code=11120 RO-data=6708 RW-data=7344 ZI-data=12904  
-".\Objects\DuckDuckGone.axf" - 0 Error(s), 17 Warning(s).
+Program Size: Code=12492 RO-data=6712 RW-data=9364 ZI-data=12908  
+".\Objects\DuckDuckGone.axf" - 0 Error(s), 14 Warning(s).
 
 <h2>Software Packages used:</h2>
 
@@ -104,24 +96,24 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: Keil::Device:Startup:1.0.0
-      Include file:  RTE_Driver\Config\RTE_Device.h
+      Include file:  Device\Include\LPC17xx.h
       Source file:   Device\Source\system_LPC17xx.c
       Source file:   Device\Source\ARM\startup_LPC17xx.s
-      Include file:  Device\Include\LPC17xx.h
+      Include file:  RTE_Driver\Config\RTE_Device.h
 
    * Component: ARM::CMSIS:RTOS:Keil RTX:4.81.1
       Include file:  CMSIS\RTOS\RTX\INC\cmsis_os.h
-      Source file:   CMSIS\RTOS\RTX\Templates\RTX_Conf_CM.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\main.c
       Include file:  CMSIS\RTOS\RTX\UserCodeTemplates\osObjects.h
       Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MailQueue.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\main.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Mutex.c
+      Source file:   CMSIS\RTOS\RTX\Templates\RTX_Conf_CM.c
       Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MsgQueue.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Mutex.c
       Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MemPool.c
       Source file:   CMSIS\RTOS\RTX\SRC\ARM\SVC_Table.s
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Semaphore.c
       Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Timer.c
       Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Thread.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Semaphore.c
       Library file:  CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib
 
    * Component: ARM::CMSIS:CORE:5.1.1
