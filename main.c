@@ -105,7 +105,7 @@ const uint32_t TICKSPEED = 200; // 200 ticks per second
 const uint32_t SECOND = 10000; // 1000 ms in a second - needs 10000 to be close to a second
 const uint32_t FPS = 120;
 const uint32_t FRAMERATE = SECOND/FPS;
-const uint32_t delayLED = 5000;
+const uint32_t delayLED = SECOND/10;
 const uint32_t crosshairSpeed = 5;
 
 
@@ -263,7 +263,7 @@ void fire(void const* arg) {
 			if(inProgress == 1){ //confirm in progress
 				//shoot();
 				GLCD_DisplayString(4, 3, 1, "fire"); //debug
-				printf("FIRED");
+				printf("FIRED"); // Used to play sound
 				
 				fireEnable = 0;
 				
