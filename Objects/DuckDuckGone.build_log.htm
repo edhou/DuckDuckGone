@@ -28,46 +28,46 @@ Project File Date:  11/16/2018
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Software\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
 compiling main.c...
-main.c(77): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "char *restrict"
+main.c(82): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "char *restrict"
   	sprintf(scoreDisp, "%d", score);
-main.c(132): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "char *restrict"
+main.c(141): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "char *restrict"
   		sprintf(scoreDisp, "%d", score);
-main.c(136): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "unsigned char *"
-  		GLCD_DisplayString(2, 7, 1, timeDisp);	
-main.c(116): warning:  #177-D: variable "xBGnd"  was declared but never referenced
-  	int xBGnd=0, yBGnd=0;
-main.c(116): warning:  #177-D: variable "yBGnd"  was declared but never referenced
-  	int xBGnd=0, yBGnd=0;
-main.c(218): warning:  #61-D: integer operation result is out of range
+main.c(145): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "unsigned char *"
+  		GLCD_DisplayStringPrecise(timeX, timeNumY, 1, timeDisp);	
+main.c(133): warning:  #177-D: variable "x1"  was declared but never referenced
+  	unsigned int x1=60;
+main.c(134): warning:  #177-D: variable "y1"  was declared but never referenced
+  	unsigned int y1=60;
+main.c(232): warning:  #61-D: integer operation result is out of range
   	
 PC_GPIO1->FIODIR |= ((1 << 28) | (1 << 29) | (1 << 31)); // bits 28, 29, 31 set as outputs
-main.c(228): warning:  #61-D: integer operation result is out of range
+main.c(242): warning:  #61-D: integer operation result is out of range
   	
 PC_GPIO1->FIOSET |= (1 << 31);
-main.c(228): warning:  #68-D: integer conversion resulted in a change of sign
+main.c(242): warning:  #68-D: integer conversion resulted in a change of sign
   	
 PC_GPIO1->FIOSET |= (1 << 31);
-main.c(257): warning:  #61-D: integer operation result is out of range
+main.c(271): warning:  #61-D: integer operation result is out of range
   				
 PC_GPIO1->FIOCLR |= (1 << 31);
-main.c(257): warning:  #68-D: integer conversion resulted in a change of sign
-  				
-PC_GPIO1->FIOCLR |= (1 << 31);
-main.c(268): warning:  #61-D: integer operation result is out of range
-  				
-PC_GPIO1->FIOCLR |= (1 << 31);
-main.c(268): warning:  #68-D: integer conversion resulted in a change of sign
+main.c(271): warning:  #68-D: integer conversion resulted in a change of sign
   				
 PC_GPIO1->FIOCLR |= (1 << 31);
 main.c(282): warning:  #61-D: integer operation result is out of range
   				
-PC_GPIO1->FIOSET |= (1 << 31);
+PC_GPIO1->FIOCLR |= (1 << 31);
 main.c(282): warning:  #68-D: integer conversion resulted in a change of sign
+  				
+PC_GPIO1->FIOCLR |= (1 << 31);
+main.c(296): warning:  #61-D: integer operation result is out of range
+  				
+PC_GPIO1->FIOSET |= (1 << 31);
+main.c(296): warning:  #68-D: integer conversion resulted in a change of sign
   				
 PC_GPIO1->FIOSET |= (1 << 31);
 main.c: 14 warnings, 0 errors
 linking...
-Program Size: Code=12492 RO-data=6712 RW-data=9364 ZI-data=12908  
+Program Size: Code=12692 RO-data=6712 RW-data=9372 ZI-data=12908  
 ".\Objects\DuckDuckGone.axf" - 0 Error(s), 14 Warning(s).
 
 <h2>Software Packages used:</h2>

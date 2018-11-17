@@ -17,6 +17,7 @@
 int WIDTH = 240;
 int HEIGHT = 320;
 unsigned short BACKCOL = 0x041f;
+unsigned short EARTHCOL = 0x8b08;
 
 // Sprite type
 int duckW = 70;
@@ -30,12 +31,16 @@ typedef struct {
 const int NDUCKS = 6;
 duck_t ducks[NDUCKS];
 
+// Crosshair position
+unsigned int xCross=60;
+unsigned int yCross=60;
+
 // Misc. data
 uint8_t inProgress = 0;
 uint32_t time = 60;
 uint8_t fireEnable = 1; //1 = player can fire; 0 = player can't fire
 char timeDisp[6];
-uint32_t score = 0;
+uint32_t score = 0; 
 unsigned char scoreDisp[6];
 enum Direction crossDirection = None;
 uint32_t crossPixelsToMove = 0;
@@ -104,20 +109,23 @@ const uint32_t delayLED = 5000;
 const uint32_t crosshairSpeed = 5;
 
 
-void monitor(void const *arg) {
-	
-	GLCD_DisplayString(1, 1, 1, "Score: ");
-	GLCD_DisplayString(2, 1, 1, "Time: ");
+void monitor(void const *arg) {	
 	
 	GLCD_WindowMax();
 	
+	// Display grass and dirt background
 	unsigned int i=0;
 	unsigned int backGndH = HEIGHT-100;
-	int xBGnd=0, yBGnd=0;
 	for(i=0; i<240; i+=10) {
 		GLCD_Bitmap_Move(&i,&backGndH,10,100,gamebackground_map,0,Left);
 	}
 	
+	const int scoreX = 255, scoreY = 15, scoreNumY = scoreY+95;
+	const int timeX=255+26, timeY = 15, timeNumY = timeY+95;
+	
+	GLCD_SetBackColor(EARTHCOL);
+	GLCD_DisplayStringPrecise(scoreX, scoreY, 1, "Score: ");
+	GLCD_DisplayStringPrecise(timeX, timeY, 1, "Time: ");
 	
 	//osMutexWait(newFrameID, osWaitForever);
 	
@@ -129,24 +137,26 @@ void monitor(void const *arg) {
 	while(inProgress == 1) {
 		
 		// Update score and time
+		GLCD_SetBackColor(EARTHCOL);
 		sprintf(scoreDisp, "%d", score);
-		GLCD_DisplayString(1, 7, 1, scoreDisp);	
+		GLCD_DisplayStringPrecise(scoreX, scoreNumY, 1, scoreDisp);	
 		
 		sprintf(timeDisp, "%d", time);
-		GLCD_DisplayString(2, 7, 1, timeDisp);	
-		if(time < 10)
-			GLCD_DisplayString(2, 8, 1, " ");	
+		GLCD_DisplayStringPrecise(timeX, timeNumY, 1, timeDisp);	
+		GLCD_SetBackColor(BACKCOL);
+		
+//		if(time < 10)
+//			GLCD_DisplayString(2, 8, 1, " ");	
 		
 		// Use mutex to pull array of sprites
 		
-		// Draw background
-		
 		// Draw sprites
-		//GLCD_DisplayString(5, 3, 1, direction);
-		//GLCD_Fill((100+x)%edge,100,60,60,BACKCOL);
 		
 		osMutexWait(crosshairID, osWaitForever);
-		GLCD_Bitmap_Move(&x1,&y1,60,60,crosshair_map,5,crossDirection);
+
+		if(!( (yCross > 160) && (crossDirection == Down) )){
+			GLCD_Bitmap_Move(&xCross,&yCross,60,60,crosshair_map,5,crossDirection);
+		}
 		osMutexRelease(crosshairID);
 		
 		// Wait until the next frame
@@ -202,11 +212,15 @@ void aim(void const* arg) {
 		deltaTime = time - previousTime;
 		previousTime = time;
 				
-		osMutexWait(crosshairID, osWaitForever);		
-			crossDirection = joystickRead();
-			crossPixelsToMove = crosshairSpeed * deltaTime;
+		osMutexWait(crosshairID, osWaitForever);
+			if(!( (yCross > 160) && (joystickRead()==Down) )){
+				crossDirection = joystickRead();
+				crossPixelsToMove = crosshairSpeed * deltaTime;
+			}
+			else{
+				crossDirection = None;
+			}
 		osMutexRelease(crosshairID);
-				
 		
 	}
 }
@@ -249,6 +263,7 @@ void fire(void const* arg) {
 			if(inProgress == 1){ //confirm in progress
 				//shoot();
 				GLCD_DisplayString(4, 3, 1, "fire"); //debug
+				printf("FIRED");
 				
 				fireEnable = 0;
 				

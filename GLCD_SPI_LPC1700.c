@@ -844,6 +844,10 @@ void GLCD_DisplayStringPrecise (unsigned int x, unsigned int y, unsigned char fi
 
   while (*s) {
     GLCD_DisplayCharPrecise(x, y++, fi, *s++);
+		if (fi)
+			y+=15;
+		else
+			y+=5;
   }
 }
 
