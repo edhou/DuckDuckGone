@@ -108,6 +108,10 @@ const uint32_t FRAMERATE = SECOND/FPS;
 const uint32_t delayLED = SECOND/10;
 const uint32_t crosshairSpeed = 5;
 
+// Number of ducks created per minute
+#define DUCKSPERMIN (15)
+const int DUCKGENSPEED = DUCKSPERMIN*SECOND/60; // ducks per second
+
 
 void monitor(void const *arg) {	
 	
@@ -179,11 +183,11 @@ void background(void const* arg) {
 		ducks[i].y = 0;
 	}
 	
-	// Create dead duck
-	
 	//osMutexRelease(newFrameID);
 	while(1){
 	while(inProgress == 1) {
+		
+		
 		osDelay(SECOND);
 		time--;
 		if (time == 0){
@@ -192,6 +196,7 @@ void background(void const* arg) {
 			showResult();
 		}
 	}
+	
 }
 }
 
