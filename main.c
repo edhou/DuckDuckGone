@@ -7,6 +7,7 @@
 #include "GLCD.h"
 #include "crosshair.h"
 #include "gamebackground.h"
+//#include "duck.h"
 #include "timer.h"
 #include <string.h>
 
@@ -20,8 +21,8 @@ unsigned short BACKCOL = 0x041f;
 unsigned short EARTHCOL = 0x8b08;
 
 // Sprite type
-int duckW = 70;
-int duckH = 70;
+int duckW = 50;
+int duckH = 50;
 
 typedef struct {
 	uint32_t x,y; // position
@@ -103,7 +104,7 @@ void restartGame(void){
 // Define performance 
 const uint32_t TICKSPEED = 200; // 200 ticks per second
 const uint32_t SECOND = 10000; // 1000 ms in a second - needs 10000 to be close to a second
-const uint32_t FPS = 120;
+const uint32_t FPS = 1000;
 const uint32_t FRAMERATE = SECOND/FPS;
 const uint32_t delayLED = SECOND/10;
 const uint32_t crosshairSpeed = 5;
@@ -139,14 +140,18 @@ void monitor(void const *arg) {
 		// Update score and time
 		GLCD_SetBackColor(EARTHCOL);
 		sprintf(scoreDisp, "%d", score);
-		GLCD_DisplayStringPrecise(scoreX, scoreNumY, 1, scoreDisp);	
+		//GLCD_DisplayStringPrecise(scoreX, scoreNumY, 1, scoreDisp);	
 		
 		sprintf(timeDisp, "%d", time);
+		if(time < 10) {
+			timeDisp[1] = timeDisp[0];
+			timeDisp[0] = ' ';
+		}
+			
+		//GLCD_DisplayStringPrecise(timeX, timeNumY, 1, " ");	
 		GLCD_DisplayStringPrecise(timeX, timeNumY, 1, timeDisp);	
 		GLCD_SetBackColor(BACKCOL);
 		
-//		if(time < 10)
-//			GLCD_DisplayString(2, 8, 1, " ");	
 		
 		// Use mutex to pull array of sprites
 		
