@@ -33,7 +33,7 @@ typedef struct {
 } duck_t;
 
 // Ducks on display
-const int NDUCKS = 60; // number of ducks the will spawn during game time
+const int NDUCKS = 30; // number of ducks the will spawn during game time
 duck_t ducks[NDUCKS];
 const int DUCKFREQ = 60/NDUCKS; // rounds a lot
 
@@ -44,7 +44,7 @@ unsigned int yCross=60;
 
 // Misc. data
 uint8_t inProgress = 0;
-uint32_t time = 15;
+uint32_t time = 60;
 uint8_t fireEnable = 1; //1 = player can fire; 0 = player can't fire
 char timeDisp[6];
 uint32_t score = 0; 
@@ -88,11 +88,11 @@ void showResult(void){
 	GLCD_Clear(0x6DEB);
 	
 	GLCD_DisplayString(3, 3, 1, "Game Over");	
-	GLCD_DisplayString(6, 1, 1, "Your Score:");	
+	GLCD_DisplayString(6, 2, 1, "Your Score:");	
 	sprintf(scoreDisp, "%d", score);
-	GLCD_DisplayString(7, 1, 1, scoreDisp);	
-	GLCD_DisplayString(9, 1, 1, "Press RESTART");	
-	GLCD_DisplayString(10, 1, 1, "to Play Again");	
+	GLCD_DisplayString(8, 7, 1, scoreDisp);	
+	GLCD_DisplayString(10, 1, 1, "Press RESTART");	
+	GLCD_DisplayString(11, 1, 1, "to Duck Again");	
 }
 
 // Function to end game and show score
@@ -141,17 +141,9 @@ void monitor(void const *arg) {
 	// This is done to reduce the size of the executable below 32kB.
 	crosshair_map = (unsigned char*)GLCD_Convert_232_565(60,60,crosshair_232_map);
 	unsigned int i=0;
-//	for (i=0; i<3600; i+=2) {
-//		if ( ((crosshair_map[i] & (0x1f)) == 0x28) && ((crosshair_map[i+1] & (0x1f)) == 0x02) )
-//			crosshair_map[i] |= 0x1f;
-//	}
 	
 	free(crosshair_232_map);
 	GLCD_WindowMax();
-	
-//	char* stuff;
-//	sprintf(stuff, "%d, %d", crosshair_map[0], crosshair_map[0]);
-//	GLCD_DisplayString(1,1,1,stuff);
 	
 	// Display grass and dirt background
 	unsigned int backGndH = HEIGHT-BACKGNDH;
@@ -179,7 +171,7 @@ void monitor(void const *arg) {
 		
 		// Update score and time
 		GLCD_SetBackColor(EARTHCOL);
-		sprintf(scoreDisp, "%d", score);
+		sprintf(scoreDisp, " %d", score);
 		GLCD_DisplayStringPrecise(scoreX, scoreNumY, 1, scoreDisp);	
 		
 		sprintf(timeDisp, "%d", time);
