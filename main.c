@@ -133,6 +133,31 @@ unsigned int generateDuckStartHeight(void) {
 	return rand()%max;
 }
 
+void shoot(void){
+	int i = 0;
+
+	osMutexWait(duckParamID, osWaitForever);
+	
+	// Iterate through the ducks
+	for (i=0; i<NDUCKS; i++) {
+		if (ducks[i].visible) {
+			// Clear ducks that have been shot
+			osMutexWait(crosshairID, osWaitForever);
+			if(((yCross+30) < (ducks[i].y + duckH) ) && (yCross+30 > ducks[i].y) && (xCross+30 > ducks[i].x) && (xCross+30 < (ducks[i].x + duckW))){
+					printf("QUACK");
+					ducks[i].visible = 0;
+					ducks[i].toClear = 1;
+					score++;
+			}
+			osMutexRelease(crosshairID);
+		}
+	}
+	shotFired = 0; // reset flag
+	
+	osMutexRelease(duckParamID);
+	
+}
+				
 void monitor(void const *arg) {	
 	
 	newFrameID = osMutexCreate(osMutex(newFrame));
@@ -264,20 +289,19 @@ void background(void const* arg) {
 					ducks[i].visible = 0;
 					ducks[i].toClear = 1;
 				}
-				// Clear ducks that have been shot
-				else if (shotFired == 1){
-					if((yCross > (ducks[i].y - duckH) ) && (yCross < ducks[i].y) && (xCross > ducks[i].x) && (xCross < (ducks[i].x + duckW))){
-						printf("QUACK");
-						ducks[i].visible = 0;
-						ducks[i].toClear = 1;
-						score++;
-						
-					}
-				}
-				osMutexRelease(crosshairID);
+			// Clear ducks that have been shot
+				else if(((yCross+30) < (ducks[i].y + duckH) ) && (yCross+30 > ducks[i].y) && (xCross+30 > ducks[i].x) && (xCross+30 < (ducks[i].x + duckW))){
+					printf("QUACK");
+					ducks[i].visible = 0;
+					ducks[i].toClear = 1;
+					score++;
+			}
+			osMutexRelease(crosshairID);
 			}
 		}
-		shotFired = 0; // reset flag
+	shotFired = 0; // reset flag
+			
+		
 		
 		osMutexRelease(duckParamID);
 		
@@ -362,6 +386,7 @@ void fire(void const* arg) {
 				
 				shotFired = 1;
 				
+				shoot();
 				//GLCD_DisplayString(4, 3, 1, "fire"); //debug
 				printf("FIRED"); // Used to play sound
 				
