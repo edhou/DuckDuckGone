@@ -217,23 +217,23 @@ void monitor(void const *arg) {
 		// Draw ducks
 		osMutexWait(duckParamID, osWaitForever);
 		for (i=0; i<NDUCKS; i++) {
-			if (ducks[i].visible) {
+			if (ducks[i].visible) { // move visible ducks
 				GLCD_Bitmap_Move(&(ducks[i].x),&(ducks[i].y),duckW,duckH,duck_map,2,Right);
 			}
-			else if (ducks[i].toClear) {
+			else if (ducks[i].toClear) { // clear ducks that need to be cleared
 				GLCD_Fill(ducks[i].x, ducks[i].y,duckW,duckH,BACKCOL);
 				ducks[i].toClear = 0; // clear flag
 			}
 		}
 		osMutexRelease(duckParamID);
 		
-		// Draw crosshair
+		// Draw + move crosshair
 		osMutexWait(crosshairID, osWaitForever);
 		if(!( (yCross > 160) && (crossDirection == Down) )){
 			GLCD_Bitmap_Move(&xCross,&yCross,60,60,crosshair_map,5,crossDirection);
 		}
-		osMutexRelease(crosshairID);
 		
+		osMutexRelease(crosshairID);
 		osMutexRelease(newFrameID);
 		
 		// Wait until the next frame
@@ -295,13 +295,13 @@ void background(void const* arg) {
 		}
 		shotFired = 0; // reset flag
 			
-		
-		
 		osMutexRelease(duckParamID);
+		
+		// update game timer
 		
 		osDelay(SECOND);
 		time--;
-		if (time == 0){
+		if (time == 0){ // check for end game condition
 			inProgress = 0;
 			fireEnable = 0;
 			showResult();
@@ -313,8 +313,10 @@ void background(void const* arg) {
 
 void aim(void const* arg) {
 	
+	// Create crosshair mutex
 	crosshairID = osMutexCreate(osMutex(crosshair));
 	
+	// Initialize movement calculation variables
 	float previousTime = 0;
 	float time = timer_read()/1E6;
 	float deltaTime = time - previousTime;
@@ -324,18 +326,21 @@ void aim(void const* arg) {
 	while(1){
 	while(inProgress == 1) {
 		
+		// Movement calculations
 		time = timer_read()/1E6;
 		deltaTime = time - previousTime;
 		previousTime = time;
 				
 		osMutexWait(crosshairID, osWaitForever);
-			if(!( (yCross > 160) && (joystickRead()==Down) )){
+			
+			if(!( (yCross > 160) && (joystickRead()==Down) )){ // restrict crosshair to within the game screen
 				crossDirection = joystickRead();
 				crossPixelsToMove = crosshairSpeed * deltaTime;
 			}
 			else{
 				crossDirection = None;
 			}
+			
 		osMutexRelease(crosshairID);
 		
 	}
@@ -371,12 +376,11 @@ void fire(void const* arg) {
 		while (LPC_GPIO2->FIOPIN & (1 << 10));
 		// if button pressed, wait for it to be released
 		while (!(LPC_GPIO2->FIOPIN & (1 << 10)));
+		// do stuff on release
 		
-		if(fireEnable == 1){
-						
-			// do stuff on release
-			
-			if(inProgress == 1){ //confirm in progress
+		if(fireEnable == 1){ // only fire if we are allowed to
+									
+			if(inProgress == 1){ //confirm game in progress
 				
 				shotFired = 1;
 				
@@ -385,16 +389,6 @@ void fire(void const* arg) {
 				printf("FIRED"); // Used to play sound
 				
 				fireEnable = 0;
-				
-				LPC_GPIO1->FIOCLR |= (1 << 28);
-				LPC_GPIO1->FIOCLR |= (1 << 29);
-				LPC_GPIO1->FIOCLR |= (1 << 31);
-
-				LPC_GPIO2->FIOCLR |= (1 << 2);
-				LPC_GPIO2->FIOCLR |= (1 << 3);
-				LPC_GPIO2->FIOCLR |= (1 << 4);
-				LPC_GPIO2->FIOCLR |= (1 << 5);
-				LPC_GPIO2->FIOCLR |= (1 << 6);
 				
 				// clear all LEDs	
 				LPC_GPIO1->FIOCLR |= (1 << 28);
@@ -456,6 +450,7 @@ int main(void) {
 	// Initialize Timer
 	timer_setup();
 	
+	// Display start screen
 	GLCD_DisplayString(3, 2, 1, "Duck");
 	GLCD_DisplayString(4, 5, 1, "Duck");
 	GLCD_DisplayString(5, 8, 1, "Gone");
@@ -467,6 +462,7 @@ int main(void) {
 	// if button pressed, wait for it to be released
 	while (!(LPC_GPIO2->FIOPIN & (1 << 10)));
 	
+	// Display game screen
 	GLCD_Clear(BACKCOL);
 	GLCD_SetBackColor(BACKCOL);
 	GLCD_SetTextColor(0xE77D);
