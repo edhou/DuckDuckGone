@@ -29,6 +29,7 @@ int duckH = 41;
 typedef struct {
 	uint32_t x,y; // position
 	int visible; // 0: hidden ; 1: displayed
+	int toClear; // flag indicating whether the duck image needs to be erased from the display
 } duck_t;
 
 // Ducks on display
@@ -133,10 +134,6 @@ void monitor(void const *arg) {
 	// This is done to reduce the size of the executable below 32kB.
 	crosshair_map = (unsigned char*)GLCD_Convert_232_565(60,60,crosshair_232_map);
 	unsigned int i=0;
-//	for (i=0; i<3600; i+=2) {
-//		if ( ((crosshair_map[i] & (0x1f)) == 0x28) && ((crosshair_map[i+1] & (0x1f)) == 0x02) )
-//			crosshair_map[i] |= 0x1f;
-//	}
 	
 	free(crosshair_232_map);
 	GLCD_WindowMax();
@@ -190,6 +187,10 @@ void monitor(void const *arg) {
 			if (ducks[i].visible) {
 				GLCD_Bitmap_Move(&(ducks[i].x),&(ducks[i].y),duckW,duckH,duck_map,2,Right);
 			}
+			else if (ducks[i].toClear) {
+				GLCD_Fill(ducks[i].x, ducks[i].y,duckW,duckH,BACKCOL);
+				ducks[i].toClear = 0; // clear flag
+			}
 		}
 		
 		if(!( (yCross > 160) && (crossDirection == Down) )){
@@ -233,6 +234,7 @@ void background(void const* arg) {
 			if (ducks[i].visible) {
 				if (ducks[i].x == MAX_X_DUCK)
 					ducks[i].visible = 0;
+					ducks[i].toClear = 1;
 			}
 		}
 		osDelay(SECOND);
@@ -421,7 +423,6 @@ int main(void) {
 	osThreadCreate(osThread(background), NULL);
 	osThreadCreate(osThread(aim), NULL);
 	osThreadCreate(osThread(fire), NULL);
-	
 	
 }
 
