@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\DuckDuckGone.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\DuckDuckGone.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Tue Nov 20 16:26:35 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Tue Nov 20 16:41:25 2018
 <BR><P>
 <H3>Maximum Stack Usage =        232 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -487,7 +487,7 @@ Global Symbols
 <LI><a href="#[66]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wr_dat_only
 <LI><a href="#[64]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;wr_cmd
 </UL>
-<BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;showResult
+<BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;showResult
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -520,7 +520,7 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[6c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_DisplayChar
 </UL>
-<BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;showResult
+<BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;showResult
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -569,13 +569,13 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[94]"></a>GLCD_SetBackColor</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, glcd_spi_lpc1700.o(i.GLCD_SetBackColor))
-<BR><BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;showResult
+<BR><BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;showResult
 <LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;monitor
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
 <P><STRONG><a name="[95]"></a>GLCD_SetTextColor</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, glcd_spi_lpc1700.o(i.GLCD_SetTextColor))
-<BR><BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;showResult
+<BR><BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;showResult
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
@@ -633,10 +633,11 @@ Global Symbols
 
 <P><STRONG><a name="[df]"></a>__1printf$1</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printf1.o(i.__0printf$1), UNUSED)
 
-<P><STRONG><a name="[89]"></a>__2printf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printf1.o(i.__0printf$1))
+<P><STRONG><a name="[87]"></a>__2printf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printf1.o(i.__0printf$1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = __2printf
 </UL>
 <BR>[Called By]<UL><LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fire
+<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;background
 </UL>
 
 <P><STRONG><a name="[7c]"></a>__0sprintf$1</STRONG> (Thumb, 34 bytes, Stack size 24 bytes, printf1.o(i.__0sprintf$1), UNUSED)
@@ -649,7 +650,7 @@ Global Symbols
 <P><STRONG><a name="[97]"></a>__2sprintf</STRONG> (Thumb, 0 bytes, Stack size 24 bytes, printf1.o(i.__0sprintf$1))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = __2sprintf
 </UL>
-<BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;showResult
+<BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;showResult
 <LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;monitor
 </UL>
 
@@ -680,16 +681,17 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.constdata)
 </UL>
-<P><STRONG><a name="[41]"></a>background</STRONG> (Thumb, 394 bytes, Stack size 0 bytes, main.o(i.background))
+<P><STRONG><a name="[41]"></a>background</STRONG> (Thumb, 400 bytes, Stack size 0 bytes, main.o(i.background))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = background &rArr; showResult &rArr; GLCD_DisplayString &rArr; GLCD_DisplayChar &rArr; GLCD_DrawChar &rArr; GLCD_SetWindow &rArr; wr_reg &rArr; wr_dat
 </UL>
 <BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;timer_setup
 <LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMutexWait
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMutexRelease
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMutexCreate
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
-<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;showResult
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;showResult
 <LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateDuckStartHeight
+<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.constdata)
 </UL>
@@ -709,8 +711,8 @@ Global Symbols
 <P><STRONG><a name="[43]"></a>fire</STRONG> (Thumb, 548 bytes, Stack size 0 bytes, main.o(i.fire))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = fire &rArr; __2printf
 </UL>
-<BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
-<LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
+<BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;__2printf
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.constdata)
 </UL>
@@ -787,7 +789,7 @@ Global Symbols
 <LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osThreadCreate
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osKernelStart
 <LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osKernelInitialize
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_SetTextColor
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_SetBackColor
 <LI><a href="#[72]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_Init
@@ -808,7 +810,7 @@ Global Symbols
 <BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMutexWait
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMutexRelease
 <LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMutexCreate
-<LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 <LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_WindowMax
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_SetBackColor
 <LI><a href="#[71]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_Fill
@@ -820,8 +822,8 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.constdata)
 </UL>
-<P><STRONG><a name="[87]"></a>osDelay</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, rt_cmsis.o(i.osDelay))
-<BR><BR>[Called By]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;showResult
+<P><STRONG><a name="[88]"></a>osDelay</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, rt_cmsis.o(i.osDelay))
+<BR><BR>[Called By]<UL><LI><a href="#[89]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;showResult
 <LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;monitor
 <LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[43]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fire
@@ -1294,10 +1296,10 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fputc
 </UL>
 
-<P><STRONG><a name="[88]"></a>showResult</STRONG> (Thumb, 108 bytes, Stack size 8 bytes, main.o(i.showResult))
+<P><STRONG><a name="[89]"></a>showResult</STRONG> (Thumb, 108 bytes, Stack size 8 bytes, main.o(i.showResult))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = showResult &rArr; GLCD_DisplayString &rArr; GLCD_DisplayChar &rArr; GLCD_DrawChar &rArr; GLCD_SetWindow &rArr; wr_reg &rArr; wr_dat
 </UL>
-<BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
+<BR>[Calls]<UL><LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 <LI><a href="#[95]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_SetTextColor
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_SetBackColor
 <LI><a href="#[6f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_DisplayString

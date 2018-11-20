@@ -180,7 +180,7 @@ void monitor(void const *arg) {
 		
 		// Update score and time
 		GLCD_SetBackColor(EARTHCOL);
-		sprintf(scoreDisp, "%d", score);
+		sprintf(scoreDisp, " %d", score);
 		GLCD_DisplayStringPrecise(scoreX, scoreNumY, 1, scoreDisp);	
 		
 		sprintf(timeDisp, "%d", time);
@@ -265,17 +265,19 @@ void background(void const* arg) {
 					ducks[i].toClear = 1;
 				}
 				// Clear ducks that have been shot
-				else if ((yCross > (ducks[i].y - duckH) ) && (yCross < ducks[i].y) && (xCross > ducks[i].x) && (xCross < (ducks[i].x + duckW)) ){
-					if(shotFired == 1){
+				else if (shotFired == 1){
+					if((yCross > (ducks[i].y - duckH) ) && (yCross < ducks[i].y) && (xCross > ducks[i].x) && (xCross < (ducks[i].x + duckW))){
+						printf("QUACK");
 						ducks[i].visible = 0;
 						ducks[i].toClear = 1;
 						score++;
-						shotFired = 0;
+						
 					}
 				}
 				osMutexRelease(crosshairID);
 			}
 		}
+		shotFired = 0; // reset flag
 		
 		osMutexRelease(duckParamID);
 		
