@@ -5,9 +5,10 @@
 #include <cmsis_os.h>
 #include "random.h"
 #include "GLCD.h"
-#include "crosshair.h"
+//#include "crosshair.h"
+#include "crosshair_232.h"
 #include "gamebackground.h"
-//#include "duck.h"
+#include "duck.h"
 #include "timer.h"
 #include <string.h>
 
@@ -19,20 +20,24 @@ int WIDTH = 240;
 int HEIGHT = 320;
 unsigned short BACKCOL = 0x041f;
 unsigned short EARTHCOL = 0x8b08;
+unsigned int BACKGNDH = 100;
 
 // Sprite type
 int duckW = 50;
-int duckH = 50;
+int duckH = 41;
 
 typedef struct {
 	uint32_t x,y; // position
+	int visible; // 0: hidden ; 1: displayed
 } duck_t;
 
 // Ducks on display
-const int NDUCKS = 6;
+const int NDUCKS = 60; // number of ducks the will spawn during game time
 duck_t ducks[NDUCKS];
+const int DUCKFREQ = 60/NDUCKS; // rounds a lot
 
 // Crosshair position
+unsigned char* crosshair_map;
 unsigned int xCross=60;
 unsigned int yCross=60;
 
@@ -109,20 +114,40 @@ const uint32_t FRAMERATE = SECOND/FPS;
 const uint32_t delayLED = SECOND/10;
 const uint32_t crosshairSpeed = 5;
 
-// Number of ducks created per minute
-#define DUCKSPERMIN (15)
-const int DUCKGENSPEED = DUCKSPERMIN*SECOND/60; // ducks per second
+//// Number of ducks created per minute
+//#define DUCKSPERMIN (15)
+//const int DUCKGENSPEED = DUCKSPERMIN*SECOND/60; // ducks per second
 
+unsigned int generateDuckStartHeight(void) {
+	// Generates a pseudorandom starting height for a duck
+	// Reference: https://www.tutorialspoint.com/c_standard_library/c_function_srand.htm
+	srand( timer_read() );
+	unsigned int max = HEIGHT-BACKGNDH-duckH;
+	return rand()%max;
+}
 
 void monitor(void const *arg) {	
 	
+	// Convert the crosshair graphics bitmap from R2 G3 B2 format to R5 G6 B6 format used by GLCD functions
+	// This is done to reduce the size of the executable below 32kB.
+	crosshair_map = (unsigned char*)GLCD_Convert_232_565(60,60,crosshair_232_map);
+	unsigned int i=0;
+//	for (i=0; i<3600; i+=2) {
+//		if ( ((crosshair_map[i] & (0x1f)) == 0x28) && ((crosshair_map[i+1] & (0x1f)) == 0x02) )
+//			crosshair_map[i] |= 0x1f;
+//	}
+	
+	free(crosshair_232_map);
 	GLCD_WindowMax();
 	
+//	char* stuff;
+//	sprintf(stuff, "%d, %d", crosshair_map[0], crosshair_map[0]);
+//	GLCD_DisplayString(1,1,1,stuff);
+	
 	// Display grass and dirt background
-	unsigned int i=0;
-	unsigned int backGndH = HEIGHT-100;
+	unsigned int backGndH = HEIGHT-BACKGNDH;
 	for(i=0; i<240; i+=10) {
-		GLCD_Bitmap_Move(&i,&backGndH,10,100,gamebackground_map,0,Left);
+		GLCD_Bitmap_Move(&i,&backGndH,10,BACKGNDH,gamebackground_map,0,Left);
 	}
 	
 	const int scoreX = 255, scoreY = 15, scoreNumY = scoreY+95;
@@ -156,13 +181,16 @@ void monitor(void const *arg) {
 		GLCD_DisplayStringPrecise(timeX, timeNumY, 1, timeDisp);	
 		GLCD_SetBackColor(BACKCOL);
 		
-		
-		// Use mutex to pull array of sprites
-		
 		// Draw sprites
 		
 		osMutexWait(crosshairID, osWaitForever);
-
+		
+		for (i=0; i<NDUCKS; i++) {
+			if (ducks[i].visible) {
+				GLCD_Bitmap_Move(&(ducks[i].x),&(ducks[i].y),duckW,duckH,duck_map,2,Right);
+			}
+		}
+		
 		if(!( (yCross > 160) && (crossDirection == Down) )){
 			GLCD_Bitmap_Move(&xCross,&yCross,60,60,crosshair_map,5,crossDirection);
 		}
@@ -179,20 +207,33 @@ void background(void const* arg) {
 	//newFrameID = osMutexCreate(osMutex(newFrame));
 	//osMutexWait(newFrameID, osWaitForever);
 	
-	// Create crosshair
-	
 	// Create ducks	
 	int i =0;
+	int duckIndex = 0;
 	for(i=0; i<NDUCKS; i++) {
 		ducks[i].x = 0;
-		ducks[i].y = 0;
+		ducks[i].y = generateDuckStartHeight();
+		ducks[i].visible = 0;
 	}
 	
 	//osMutexRelease(newFrameID);
+	timer_setup();
+	int addDuckNow = 0;
+	const int MAX_X_DUCK = WIDTH - duckW;
 	while(1){
 	while(inProgress == 1) {
 		
+		if(addDuckNow == 0) {
+			ducks[duckIndex++].visible = 1;
+		}
+		addDuckNow = (++addDuckNow)%DUCKFREQ;
 		
+		for (i=0; i<NDUCKS; i++) {
+			if (ducks[i].visible) {
+				if (ducks[i].x == MAX_X_DUCK)
+					ducks[i].visible = 0;
+			}
+		}
 		osDelay(SECOND);
 		time--;
 		if (time == 0){
@@ -272,7 +313,7 @@ void fire(void const* arg) {
 			
 			if(inProgress == 1){ //confirm in progress
 				//shoot();
-				GLCD_DisplayString(4, 3, 1, "fire"); //debug
+				//GLCD_DisplayString(4, 3, 1, "fire"); //debug
 				printf("FIRED"); // Used to play sound
 				
 				fireEnable = 0;
@@ -299,7 +340,7 @@ void fire(void const* arg) {
 				LPC_GPIO2->FIOCLR |= (1 << 6);
 				
 				osDelay(delayLED);
-				GLCD_DisplayString(4, 3, 1, "    "); //debug
+				//GLCD_DisplayString(4, 3, 1, "    "); //debug
 				LPC_GPIO1->FIOSET |= (1 << 28);	
 				osDelay(delayLED);
 				LPC_GPIO1->FIOSET |= (1 << 29);

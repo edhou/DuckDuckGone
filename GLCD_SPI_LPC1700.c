@@ -14,6 +14,7 @@
 #include "GLCD.h"
 #include "Font_6x8_h.h"
 #include "Font_16x24_h.h"
+#include <stdlib.h>
 
 /************************** Orientation  configuration ************************/
 
@@ -1030,6 +1031,40 @@ void GLCD_Bitmap_Move (unsigned int* x, unsigned int* y, unsigned int w, unsigne
 				wr_dat_only (Color[BG_COLOR]);
 	
   wr_dat_stop();
+}
+
+/*******************************************************************************
+* 					Convert a bitmap from R2G3B2 format to R5G6B5										   *
+* 																																			       *
+*   Parameters:      w:        width of bitmap                             		 *
+*                   h:        height of bitmap                                 *
+*                   bitmap_232:        pointer to the bitmap to be converted	 *
+*   Return: R5G6B5 bitmap                                                      *
+*******************************************************************************/
+
+unsigned short* GLCD_Convert_232_565 (unsigned int w, unsigned int h, unsigned char *bitmap_232) {
+	
+	int size = w*h;
+	
+  unsigned short *bitmap_565 = (unsigned short*)malloc(size*sizeof(unsigned short)); // allocate 2 bits per byte
+	unsigned short red, green, blue;
+	unsigned char pixel232;
+	int i;
+	for (i=0; i<size; i++) {
+		pixel232 = bitmap_232[i];
+		if (pixel232 == 0x13) {
+			// Value 0x13 in particular should be converted to sky blue for the game's needs
+			// Using an approximation would render unideally on display
+			bitmap_565[i] = 0x041f;
+			continue;
+		}
+		red = ((unsigned short)pixel232 & (0x3 << 5) ) >> 2; // red = pixel & (0b11 << 5) >> 5 << 3
+		blue = ((unsigned short)pixel232 & 0x3) << 3; // blue = pixel & 0b11 << 3
+		green = ((unsigned short)pixel232 & (0x7 << 2) ) << 1; // green = pixel & (0b111 << 2) >> 2 << 3
+		bitmap_565[i] = (red << 11) | (green << 5) | (blue);
+	}
+	return bitmap_565;
+	
 }
 
 /*******************************************************************************

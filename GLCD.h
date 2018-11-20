@@ -61,9 +61,10 @@ extern void GLCD_ClearLn        (unsigned int ln, unsigned char fi);
 extern void GLCD_Bargraph       (unsigned int x,  unsigned int y, unsigned int w, unsigned int h, unsigned int val);
 extern void GLCD_Bitmap         (unsigned int x,  unsigned int y, unsigned int w, unsigned int h, unsigned char *bitmap);
 
-// Function created by lab partners: GLCD_Fill, GLCD_Bitmap_Move1px, GLCD_Bitmap_Move
+// Function created by lab partners: GLCD_Fill, GLCD_Bitmap_Move1px, GLCD_Bitmap_Move, GLCD_Convert_232_565, GLCD_DisplayCharPrecise, GLCD_DisplayStringPrecise
 extern void GLCD_Fill						(unsigned int x,  unsigned int y, unsigned int w, unsigned int h, unsigned short colour);
 extern void GLCD_Bitmap_Move (unsigned int* x, unsigned int* y, unsigned int w, unsigned int h, unsigned char *bitmap, unsigned int dist, enum Direction dir);
+extern unsigned short* GLCD_Convert_232_565 (unsigned int w, unsigned int h, unsigned char *bitmap_232);
 extern void GLCD_DisplayCharPrecise (unsigned int x, unsigned int y, unsigned char fi, unsigned char c);
 extern void GLCD_DisplayStringPrecise (unsigned int x, unsigned int y, unsigned char fi, unsigned char *s);
 

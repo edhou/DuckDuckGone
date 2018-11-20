@@ -28,48 +28,48 @@ Project File Date:  11/16/2018
 *** Using Compiler 'V5.06 update 5 (build 528)', folder: 'C:\Software\Keil_v5\ARM\ARMCC\Bin'
 Build target 'Target 1'
 compiling main.c...
-main.c(83): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "char *restrict"
+main.c(88): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "char *restrict"
   	sprintf(scoreDisp, "%d", score);
-main.c(142): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "char *restrict"
+main.c(171): warning:  #167-D: argument of type "unsigned char *" is incompatible with parameter of type "char *restrict"
   		sprintf(scoreDisp, "%d", score);
-main.c(152): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "unsigned char *"
+main.c(181): warning:  #167-D: argument of type "char *" is incompatible with parameter of type "unsigned char *"
   		GLCD_DisplayStringPrecise(timeX, timeNumY, 1, timeDisp);	
-main.c(124): warning:  #177-D: variable "scoreNumY"  was declared but never referenced
+main.c(153): warning:  #177-D: variable "scoreNumY"  was declared but never referenced
   	const int scoreX = 255, scoreY = 15, scoreNumY = scoreY+95;
-main.c(134): warning:  #177-D: variable "x1"  was declared but never referenced
+main.c(163): warning:  #177-D: variable "x1"  was declared but never referenced
   	unsigned int x1=60;
-main.c(135): warning:  #177-D: variable "y1"  was declared but never referenced
+main.c(164): warning:  #177-D: variable "y1"  was declared but never referenced
   	unsigned int y1=60;
-main.c(237): warning:  #61-D: integer operation result is out of range
+main.c(283): warning:  #61-D: integer operation result is out of range
   	
 PC_GPIO1->FIODIR |= ((1 << 28) | (1 << 29) | (1 << 31)); // bits 28, 29, 31 set as outputs
-main.c(247): warning:  #61-D: integer operation result is out of range
+main.c(293): warning:  #61-D: integer operation result is out of range
   	
 PC_GPIO1->FIOSET |= (1 << 31);
-main.c(247): warning:  #68-D: integer conversion resulted in a change of sign
+main.c(293): warning:  #68-D: integer conversion resulted in a change of sign
   	
 PC_GPIO1->FIOSET |= (1 << 31);
-main.c(277): warning:  #61-D: integer operation result is out of range
+main.c(323): warning:  #61-D: integer operation result is out of range
   				
 PC_GPIO1->FIOCLR |= (1 << 31);
-main.c(277): warning:  #68-D: integer conversion resulted in a change of sign
+main.c(323): warning:  #68-D: integer conversion resulted in a change of sign
   				
 PC_GPIO1->FIOCLR |= (1 << 31);
-main.c(288): warning:  #61-D: integer operation result is out of range
+main.c(334): warning:  #61-D: integer operation result is out of range
   				
 PC_GPIO1->FIOCLR |= (1 << 31);
-main.c(288): warning:  #68-D: integer conversion resulted in a change of sign
+main.c(334): warning:  #68-D: integer conversion resulted in a change of sign
   				
 PC_GPIO1->FIOCLR |= (1 << 31);
-main.c(302): warning:  #61-D: integer operation result is out of range
+main.c(348): warning:  #61-D: integer operation result is out of range
   				
 PC_GPIO1->FIOSET |= (1 << 31);
-main.c(302): warning:  #68-D: integer conversion resulted in a change of sign
+main.c(348): warning:  #68-D: integer conversion resulted in a change of sign
   				
 PC_GPIO1->FIOSET |= (1 << 31);
 main.c: 15 warnings, 0 errors
 linking...
-Program Size: Code=13228 RO-data=6712 RW-data=9384 ZI-data=12904  
+Program Size: Code=13828 RO-data=6716 RW-data=9904 ZI-data=21768  
 ".\Objects\DuckDuckGone.axf" - 0 Error(s), 15 Warning(s).
 
 <h2>Software Packages used:</h2>
@@ -98,30 +98,30 @@ Package Vendor: Keil
 <h2>Collection of Component Files used:</h2>
 
    * Component: Keil::Device:Startup:1.0.0
-      Include file:  Device\Include\LPC17xx.h
-      Source file:   Device\Source\system_LPC17xx.c
-      Include file:  RTE_Driver\Config\RTE_Device.h
       Source file:   Device\Source\ARM\startup_LPC17xx.s
+      Include file:  RTE_Driver\Config\RTE_Device.h
+      Source file:   Device\Source\system_LPC17xx.c
+      Include file:  Device\Include\LPC17xx.h
 
    * Component: ARM::CMSIS:RTOS:Keil RTX:4.81.1
-      Source file:   CMSIS\RTOS\RTX\Templates\RTX_Conf_CM.c
-      Include file:  CMSIS\RTOS\RTX\UserCodeTemplates\osObjects.h
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MailQueue.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MemPool.c
-      Include file:  CMSIS\RTOS\RTX\INC\cmsis_os.h
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MsgQueue.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Mutex.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\main.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Thread.c
-      Library file:  CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Timer.c
-      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Semaphore.c
       Source file:   CMSIS\RTOS\RTX\SRC\ARM\SVC_Table.s
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\main.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Mutex.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MsgQueue.c
+      Include file:  CMSIS\RTOS\RTX\UserCodeTemplates\osObjects.h
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MemPool.c
+      Library file:  CMSIS\RTOS\RTX\LIB\ARM\RTX_CM3.lib
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Semaphore.c
+      Include file:  CMSIS\RTOS\RTX\INC\cmsis_os.h
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\MailQueue.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Thread.c
+      Source file:   CMSIS\RTOS\RTX\Templates\RTX_Conf_CM.c
+      Source file:   CMSIS\RTOS\RTX\UserCodeTemplates\Timer.c
 
    * Component: ARM::CMSIS:CORE:5.1.1
 
    * Component: ::CMSIS:RTOS:1.0.0 (API)
-Build Time Elapsed:  00:00:02
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>
