@@ -46,6 +46,7 @@ unsigned int yCross=60;
 uint8_t inProgress = 0;
 uint32_t time = 15;
 uint8_t fireEnable = 1; //1 = player can fire; 0 = player can't fire
+uint8_t shotFired = 0;
 char timeDisp[6];
 uint32_t score = 0; 
 unsigned char scoreDisp[6];
@@ -254,11 +255,25 @@ void background(void const* arg) {
 		}
 		addDuckNow = (++addDuckNow)%DUCKFREQ;
 		
+		// Iterate through the ducks
 		for (i=0; i<NDUCKS; i++) {
 			if (ducks[i].visible) {
-				if (ducks[i].x == MAX_X_DUCK)
+				osMutexWait(crosshairID, osWaitForever);
+				// Clear ducks that reach edge of screen
+				if (ducks[i].x == MAX_X_DUCK){
 					ducks[i].visible = 0;
 					ducks[i].toClear = 1;
+				}
+				// Clear ducks that have been shot
+				else if ((yCross > (ducks[i].y - duckH) ) && (yCross < ducks[i].y) && (xCross > ducks[i].x) && (xCross < (ducks[i].x + duckW)) ){
+					if(shotFired == 1){
+						ducks[i].visible = 0;
+						ducks[i].toClear = 1;
+						score++;
+						shotFired = 0;
+					}
+				}
+				osMutexRelease(crosshairID);
 			}
 		}
 		
@@ -342,7 +357,9 @@ void fire(void const* arg) {
 			// do stuff on release
 			
 			if(inProgress == 1){ //confirm in progress
-				//shoot();
+				
+				shotFired = 1;
+				
 				//GLCD_DisplayString(4, 3, 1, "fire"); //debug
 				printf("FIRED"); // Used to play sound
 				
