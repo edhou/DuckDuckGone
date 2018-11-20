@@ -968,14 +968,11 @@ void GLCD_Bitmap (unsigned int x, unsigned int y, unsigned int w, unsigned int h
 
 void GLCD_Bitmap_Move (unsigned int* x, unsigned int* y, unsigned int w, unsigned int h, unsigned char *bitmap, unsigned int dist, enum Direction dir) {
 	
-	if (dir == None)
-		return;
+//	if (dir == None)
+//		return;
 		
 	int i, j, k;
   unsigned short *bitmap_ptr = (unsigned short *)bitmap;
-	
-	unsigned int x0 = *x;
-	unsigned int y0 = *y;
 	
 	if (dir == Left) {
 		if( (*x) >= dist )	
@@ -984,27 +981,31 @@ void GLCD_Bitmap_Move (unsigned int* x, unsigned int* y, unsigned int w, unsigne
 			(*x) = 0;
 		GLCD_SetWindow ((*x), (*y), w+dist, h);
 	}
-	if (dir == Right) {
+	else if (dir == Right) {
 		if( (*x) + w + dist < WIDTH )
 			(*x) = (*x)+dist;
 		else
 			(*x) = WIDTH-w;
 		GLCD_SetWindow ((*x)-dist, (*y), w+dist, h);
 	}
-	if (dir == Up) {
+	else if (dir == Up) {
 		if( (*y) >= dist )
 			(*y) = (*y)-dist;
 		else
 			(*y) = 0;
 		GLCD_SetWindow ((*x), (*y), w, h+dist);
 	}
-	if (dir == Down) {
+	else if (dir == Down) {
 		if( (*y) + h + dist < HEIGHT )
 			(*y) = (*y)+dist;
 		else
 			(*y) = HEIGHT-h;
 		GLCD_SetWindow ((*x), (*y)-dist, w, h+dist);
 	}
+	else if (dir == None) {
+		GLCD_SetWindow ((*x), (*y), w, h);
+	}
+	
 		
 	wr_cmd(0x22);
   wr_dat_start();

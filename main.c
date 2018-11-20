@@ -386,9 +386,8 @@ void fire(void const* arg) {
 				
 				shotFired = 1;
 				
-				shoot();
-				//GLCD_DisplayString(4, 3, 1, "fire"); //debug
 				printf("FIRED"); // Used to play sound
+				shoot();
 				
 				fireEnable = 0;
 				
