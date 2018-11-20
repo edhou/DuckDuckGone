@@ -44,7 +44,7 @@ unsigned int yCross=60;
 
 // Misc. data
 uint8_t inProgress = 0;
-uint32_t time = 30;
+uint32_t time = 15;
 uint8_t fireEnable = 1; //1 = player can fire; 0 = player can't fire
 char timeDisp[6];
 uint32_t score = 0; 
@@ -58,6 +58,9 @@ osMutexId(newFrameID);
 
 osMutexDef(crosshair);
 osMutexId(crosshairID);
+
+osMutexDef(duckParam);
+osMutexId(duckParamID);
 
 // Function to get joystick position
 enum Direction joystickRead(void) {
@@ -88,7 +91,8 @@ void showResult(void){
 	GLCD_DisplayString(6, 1, 1, "Your Score:");	
 	sprintf(scoreDisp, "%d", score);
 	GLCD_DisplayString(7, 1, 1, scoreDisp);	
-	GLCD_DisplayString(9, 1, 1, "Press RESTART to Play Again");	
+	GLCD_DisplayString(9, 1, 1, "Press RESTART");	
+	GLCD_DisplayString(10, 1, 1, "to Play Again");	
 }
 
 // Function to end game and show score
@@ -102,7 +106,7 @@ void restartGame(void){
 	
 	inProgress = 1;
 	fireEnable = 1;
-	time = 30;
+	time = 15;
 	
 	GLCD_DisplayString(1, 1, 1, "Score: ");
 	GLCD_DisplayString(2, 1, 1, "Time: ");
@@ -130,10 +134,17 @@ unsigned int generateDuckStartHeight(void) {
 
 void monitor(void const *arg) {	
 	
+	newFrameID = osMutexCreate(osMutex(newFrame));
+	osMutexWait(newFrameID, osWaitForever);
+	
 	// Convert the crosshair graphics bitmap from R2 G3 B2 format to R5 G6 B6 format used by GLCD functions
 	// This is done to reduce the size of the executable below 32kB.
 	crosshair_map = (unsigned char*)GLCD_Convert_232_565(60,60,crosshair_232_map);
 	unsigned int i=0;
+//	for (i=0; i<3600; i+=2) {
+//		if ( ((crosshair_map[i] & (0x1f)) == 0x28) && ((crosshair_map[i+1] & (0x1f)) == 0x02) )
+//			crosshair_map[i] |= 0x1f;
+//	}
 	
 	free(crosshair_232_map);
 	GLCD_WindowMax();
@@ -155,7 +166,7 @@ void monitor(void const *arg) {
 	GLCD_DisplayStringPrecise(scoreX, scoreY, 1, "Score: ");
 	GLCD_DisplayStringPrecise(timeX, timeY, 1, "Time: ");
 	
-	//osMutexWait(newFrameID, osWaitForever);
+	osMutexRelease(newFrameID);
 	
 	// Render frames
 	unsigned int x1=60;
@@ -164,10 +175,12 @@ void monitor(void const *arg) {
 	while(1){
 	while(inProgress == 1) {
 		
+		osMutexWait(newFrameID, osWaitForever);
+		
 		// Update score and time
 		GLCD_SetBackColor(EARTHCOL);
 		sprintf(scoreDisp, "%d", score);
-		//GLCD_DisplayStringPrecise(scoreX, scoreNumY, 1, scoreDisp);	
+		GLCD_DisplayStringPrecise(scoreX, scoreNumY, 1, scoreDisp);	
 		
 		sprintf(timeDisp, "%d", time);
 		if(time < 10) {
@@ -181,8 +194,8 @@ void monitor(void const *arg) {
 		
 		// Draw sprites
 		
-		osMutexWait(crosshairID, osWaitForever);
-		
+		// Draw ducks
+		osMutexWait(duckParamID, osWaitForever);
 		for (i=0; i<NDUCKS; i++) {
 			if (ducks[i].visible) {
 				GLCD_Bitmap_Move(&(ducks[i].x),&(ducks[i].y),duckW,duckH,duck_map,2,Right);
@@ -192,11 +205,16 @@ void monitor(void const *arg) {
 				ducks[i].toClear = 0; // clear flag
 			}
 		}
+		osMutexRelease(duckParamID);
 		
+		// Draw crosshair
+		osMutexWait(crosshairID, osWaitForever);
 		if(!( (yCross > 160) && (crossDirection == Down) )){
 			GLCD_Bitmap_Move(&xCross,&yCross,60,60,crosshair_map,5,crossDirection);
 		}
 		osMutexRelease(crosshairID);
+		
+		osMutexRelease(newFrameID);
 		
 		// Wait until the next frame
 		osDelay(FRAMERATE);
@@ -206,8 +224,11 @@ void monitor(void const *arg) {
 }
 
 void background(void const* arg) {
-	//newFrameID = osMutexCreate(osMutex(newFrame));
-	//osMutexWait(newFrameID, osWaitForever);
+	
+	duckParamID = osMutexCreate(osMutex(duckParam));
+	osMutexWait(duckParamID, osWaitForever);
+	
+	timer_setup();
 	
 	// Create ducks	
 	int i =0;
@@ -218,12 +239,15 @@ void background(void const* arg) {
 		ducks[i].visible = 0;
 	}
 	
-	//osMutexRelease(newFrameID);
-	timer_setup();
 	int addDuckNow = 0;
 	const int MAX_X_DUCK = WIDTH - duckW;
+	
+	osMutexRelease(duckParamID);
+	
 	while(1){
 	while(inProgress == 1) {
+		
+		osMutexWait(duckParamID, osWaitForever);
 		
 		if(addDuckNow == 0) {
 			ducks[duckIndex++].visible = 1;
@@ -237,6 +261,9 @@ void background(void const* arg) {
 					ducks[i].toClear = 1;
 			}
 		}
+		
+		osMutexRelease(duckParamID);
+		
 		osDelay(SECOND);
 		time--;
 		if (time == 0){
@@ -343,7 +370,6 @@ void fire(void const* arg) {
 				LPC_GPIO2->FIOCLR |= (1 << 6);
 				
 				osDelay(delayLED);
-				//GLCD_DisplayString(4, 3, 1, "    "); //debug
 				LPC_GPIO1->FIOSET |= (1 << 28);	
 				osDelay(delayLED);
 				LPC_GPIO1->FIOSET |= (1 << 29);
@@ -423,6 +449,7 @@ int main(void) {
 	osThreadCreate(osThread(background), NULL);
 	osThreadCreate(osThread(aim), NULL);
 	osThreadCreate(osThread(fire), NULL);
+	
 	
 }
 
