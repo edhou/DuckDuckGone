@@ -121,43 +121,12 @@ const uint32_t FRAMERATE = SECOND/FPS;
 const uint32_t delayLED = SECOND/10;
 const uint32_t crosshairSpeed = 5;
 
-//// Number of ducks created per minute
-//#define DUCKSPERMIN (15)
-//const int DUCKGENSPEED = DUCKSPERMIN*SECOND/60; // ducks per second
-
 unsigned int generateDuckStartHeight(void) {
 	// Generates a pseudorandom starting height for a duck
 	// Reference: https://www.tutorialspoint.com/c_standard_library/c_function_srand.htm
 	srand( timer_read() );
 	unsigned int max = HEIGHT-BACKGNDH-duckH;
 	return rand()%max;
-}
-
-// Function for collision detection between crosshair and ducks for score count
-// Unused: now embedded within Background task
-void shoot(void){
-	int i = 0;
-
-	osMutexWait(duckParamID, osWaitForever);
-	
-	// Iterate through the ducks
-	for (i=0; i<NDUCKS; i++) {
-		if (ducks[i].visible) {
-			// Clear ducks that have been shot
-			osMutexWait(crosshairID, osWaitForever);
-			if(((yCross+30) < (ducks[i].y + duckH) ) && (yCross+30 > ducks[i].y) && (xCross+30 > ducks[i].x) && (xCross+30 < (ducks[i].x + duckW))){
-					printf("QUACK");
-					ducks[i].visible = 0;
-					ducks[i].toClear = 1;
-					score++;
-			}
-			osMutexRelease(crosshairID);
-		}
-	}
-	shotFired = 0; // reset flag
-	
-	osMutexRelease(duckParamID);
-	
 }
 				
 void monitor(void const *arg) {	
@@ -207,12 +176,9 @@ void monitor(void const *arg) {
 			timeDisp[1] = timeDisp[0];
 			timeDisp[0] = ' ';
 		}
-			
-		//GLCD_DisplayStringPrecise(timeX, timeNumY, 1, " ");	
+				
 		GLCD_DisplayStringPrecise(timeX, timeNumY, 1, timeDisp);	
 		GLCD_SetBackColor(BACKCOL);
-		
-		// Draw sprites
 		
 		// Draw ducks
 		osMutexWait(duckParamID, osWaitForever);
@@ -265,6 +231,7 @@ void background(void const* arg) {
 	osMutexRelease(duckParamID);
 	
 	while(1){
+		
 	while(inProgress == 1) {
 		
 		osMutexWait(duckParamID, osWaitForever);
@@ -298,7 +265,6 @@ void background(void const* arg) {
 		osMutexRelease(duckParamID);
 		
 		// update game timer
-		
 		osDelay(SECOND);
 		time--;
 		if (time == 0){ // check for end game condition
@@ -307,8 +273,7 @@ void background(void const* arg) {
 			showResult();
 		}
 	}
-	
-}
+	}
 }
 
 void aim(void const* arg) {
@@ -344,7 +309,7 @@ void aim(void const* arg) {
 		osMutexRelease(crosshairID);
 		
 	}
-}
+	}
 }
 
 void fire(void const* arg) {
@@ -376,8 +341,8 @@ void fire(void const* arg) {
 		while (LPC_GPIO2->FIOPIN & (1 << 10));
 		// if button pressed, wait for it to be released
 		while (!(LPC_GPIO2->FIOPIN & (1 << 10)));
-		// do stuff on release
 		
+		// do stuff on release
 		if(fireEnable == 1){ // only fire if we are allowed to
 									
 			if(inProgress == 1){ //confirm game in progress
@@ -484,7 +449,6 @@ int main(void) {
 	osThreadCreate(osThread(background), NULL);
 	osThreadCreate(osThread(aim), NULL);
 	osThreadCreate(osThread(fire), NULL);
-	
 	
 }
 
