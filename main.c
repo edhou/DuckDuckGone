@@ -43,7 +43,7 @@ unsigned int yCross=60;
 
 // Misc. data
 uint8_t inProgress = 0;
-uint32_t time = 60;
+uint32_t time = 30;
 uint8_t fireEnable = 1; //1 = player can fire; 0 = player can't fire
 char timeDisp[6];
 uint32_t score = 0; 
@@ -87,6 +87,7 @@ void showResult(void){
 	GLCD_DisplayString(6, 1, 1, "Your Score:");	
 	sprintf(scoreDisp, "%d", score);
 	GLCD_DisplayString(7, 1, 1, scoreDisp);	
+	GLCD_DisplayString(9, 1, 1, "Press RESTART to Play Again");	
 }
 
 // Function to end game and show score
@@ -100,7 +101,7 @@ void restartGame(void){
 	
 	inProgress = 1;
 	fireEnable = 1;
-	time = 60;
+	time = 30;
 	
 	GLCD_DisplayString(1, 1, 1, "Score: ");
 	GLCD_DisplayString(2, 1, 1, "Time: ");
@@ -368,8 +369,9 @@ void fire(void const* arg) {
 			// if button pressed, wait for it to be released
 			while (!(LPC_GPIO2->FIOPIN & (1 << 10)));
 			
-			restartGame();
-			inProgress = 1;
+			//Restart game via RESET button
+			//restartGame();
+			//inProgress = 1;
 	}
 	
 	}
