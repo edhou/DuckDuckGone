@@ -129,6 +129,33 @@ unsigned int generateDuckStartHeight(void) {
 	return rand()%max;
 }
 				
+// Function for collision detection between crosshair and ducks for score count
+// Unused: now embedded within Background task
+void shoot(void){
+	int i = 0;
+
+	osMutexWait(duckParamID, osWaitForever);
+	
+	// Iterate through the ducks
+	for (i=0; i<NDUCKS; i++) {
+		if (ducks[i].visible) {
+			// Clear ducks that have been shot
+			osMutexWait(crosshairID, osWaitForever);
+			if(((yCross+30) < (ducks[i].y + duckH) ) && (yCross+30 > ducks[i].y) && (xCross+30 > ducks[i].x) && (xCross+30 < (ducks[i].x + duckW))){
+					printf("QUACK");
+					ducks[i].visible = 0;
+					ducks[i].toClear = 1;
+					score++;
+			}
+			osMutexRelease(crosshairID);
+		}
+	}
+	shotFired = 0; // reset flag
+	
+	osMutexRelease(duckParamID);
+	
+}
+
 void monitor(void const *arg) {	
 	
 	newFrameID = osMutexCreate(osMutex(newFrame));
