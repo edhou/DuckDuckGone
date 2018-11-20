@@ -53,14 +53,14 @@ unsigned char scoreDisp[6];
 enum Direction crossDirection = None;
 uint32_t crossPixelsToMove = 0;
 
-// Define mutex
+// Define mutexes
 osMutexDef(newFrame); // waits for background to update sprite positions
 osMutexId(newFrameID);
 
-osMutexDef(crosshair);
+osMutexDef(crosshair); // protects crosshair parameters
 osMutexId(crosshairID);
 
-osMutexDef(duckParam);
+osMutexDef(duckParam); // protects duck array paramaters
 osMutexId(duckParamID);
 
 // Function to get joystick position
@@ -96,7 +96,7 @@ void showResult(void){
 	GLCD_DisplayString(11, 1, 1, "to Duck Again");	
 }
 
-// Function to end game and show score
+// Function to restart game and show score
 void restartGame(void){
 	osDelay(3000);
 	GLCD_Clear(BACKCOL);
@@ -133,6 +133,8 @@ unsigned int generateDuckStartHeight(void) {
 	return rand()%max;
 }
 
+// Function for collision detection between crosshair and ducks for score count
+// Unused: now embedded within Background task
 void shoot(void){
 	int i = 0;
 
@@ -167,17 +169,9 @@ void monitor(void const *arg) {
 	// This is done to reduce the size of the executable below 32kB.
 	crosshair_map = (unsigned char*)GLCD_Convert_232_565(60,60,crosshair_232_map);
 	unsigned int i=0;
-//	for (i=0; i<3600; i+=2) {
-//		if ( ((crosshair_map[i] & (0x1f)) == 0x28) && ((crosshair_map[i+1] & (0x1f)) == 0x02) )
-//			crosshair_map[i] |= 0x1f;
-//	}
 	
 	free(crosshair_232_map);
 	GLCD_WindowMax();
-	
-//	char* stuff;
-//	sprintf(stuff, "%d, %d", crosshair_map[0], crosshair_map[0]);
-//	GLCD_DisplayString(1,1,1,stuff);
 	
 	// Display grass and dirt background
 	unsigned int backGndH = HEIGHT-BACKGNDH;
@@ -413,6 +407,7 @@ void fire(void const* arg) {
 				LPC_GPIO2->FIOCLR |= (1 << 5);
 				LPC_GPIO2->FIOCLR |= (1 << 6);
 				
+				// Re-enable LEDs one by one
 				osDelay(delayLED);
 				LPC_GPIO1->FIOSET |= (1 << 28);	
 				osDelay(delayLED);
@@ -489,6 +484,7 @@ int main(void) {
 	osKernelInitialize(); 
 	osKernelStart();
 	
+	// Start Threads	
 	osThreadCreate(osThread(monitor), NULL);
 	osThreadCreate(osThread(background), NULL);
 	osThreadCreate(osThread(aim), NULL);
