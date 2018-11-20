@@ -290,7 +290,7 @@ void background(void const* arg) {
 					ducks[i].toClear = 1;
 				}
 			// Clear ducks that have been shot
-				else if(((yCross+30) < (ducks[i].y + duckH) ) && (yCross+30 > ducks[i].y) && (xCross+30 > ducks[i].x) && (xCross+30 < (ducks[i].x + duckW))){
+				else if(shotFired == 1 && ((yCross+30) < (ducks[i].y + duckH) ) && (yCross+30 > ducks[i].y) && (xCross+30 > ducks[i].x) && (xCross+30 < (ducks[i].x + duckW))){
 					printf("QUACK");
 					ducks[i].visible = 0;
 					ducks[i].toClear = 1;
@@ -299,7 +299,7 @@ void background(void const* arg) {
 			osMutexRelease(crosshairID);
 			}
 		}
-	shotFired = 0; // reset flag
+		shotFired = 0; // reset flag
 			
 		
 		
