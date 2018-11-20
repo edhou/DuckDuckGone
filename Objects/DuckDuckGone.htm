@@ -3,7 +3,7 @@
 <title>Static Call Graph - [.\Objects\DuckDuckGone.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\DuckDuckGone.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Tue Nov 20 15:53:21 2018
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 5060528: Last Updated: Tue Nov 20 16:26:35 2018
 <BR><P>
 <H3>Maximum Stack Usage =        232 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
@@ -313,11 +313,11 @@ Global Symbols
 <BR>[Address Reference Count : 1]<UL><LI> startup_lpc17xx.o(RESET)
 </UL>
 <P><STRONG><a name="[8c]"></a>rand</STRONG> (Thumb, 20 bytes, Stack size 0 bytes, rand.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateDuckStartHeight
+<BR><BR>[Called By]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateDuckStartHeight
 </UL>
 
 <P><STRONG><a name="[8b]"></a>srand</STRONG> (Thumb, 6 bytes, Stack size 0 bytes, rand.o(.text))
-<BR><BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateDuckStartHeight
+<BR><BR>[Called By]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateDuckStartHeight
 </UL>
 
 <P><STRONG><a name="[82]"></a>__aeabi_fmul</STRONG> (Thumb, 100 bytes, Stack size 8 bytes, fmul.o(.text))
@@ -680,13 +680,16 @@ Global Symbols
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.constdata)
 </UL>
-<P><STRONG><a name="[41]"></a>background</STRONG> (Thumb, 186 bytes, Stack size 0 bytes, main.o(i.background))
+<P><STRONG><a name="[41]"></a>background</STRONG> (Thumb, 394 bytes, Stack size 0 bytes, main.o(i.background))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = background &rArr; showResult &rArr; GLCD_DisplayString &rArr; GLCD_DisplayChar &rArr; GLCD_DrawChar &rArr; GLCD_SetWindow &rArr; wr_reg &rArr; wr_dat
 </UL>
-<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;timer_setup
+<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;timer_setup
+<LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMutexWait
+<LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMutexRelease
+<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMutexCreate
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 <LI><a href="#[88]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;showResult
-<LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateDuckStartHeight
+<LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateDuckStartHeight
 </UL>
 <BR>[Address Reference Count : 1]<UL><LI> main.o(.constdata)
 </UL>
@@ -703,7 +706,7 @@ Global Symbols
 <BR><BR>[Called By]<UL><LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_switch_req
 </UL>
 
-<P><STRONG><a name="[43]"></a>fire</STRONG> (Thumb, 544 bytes, Stack size 0 bytes, main.o(i.fire))
+<P><STRONG><a name="[43]"></a>fire</STRONG> (Thumb, 548 bytes, Stack size 0 bytes, main.o(i.fire))
 <BR><BR>[Stack]<UL><LI>Max Depth = 24<LI>Call Chain = fire &rArr; __2printf
 </UL>
 <BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
@@ -724,7 +727,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;monitor
 </UL>
 
-<P><STRONG><a name="[85]"></a>generateDuckStartHeight</STRONG> (Thumb, 42 bytes, Stack size 16 bytes, main.o(i.generateDuckStartHeight))
+<P><STRONG><a name="[86]"></a>generateDuckStartHeight</STRONG> (Thumb, 42 bytes, Stack size 16 bytes, main.o(i.generateDuckStartHeight))
 <BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = generateDuckStartHeight
 </UL>
 <BR>[Calls]<UL><LI><a href="#[7f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;timer_read
@@ -780,7 +783,7 @@ Global Symbols
 <P><STRONG><a name="[45]"></a>main</STRONG> (Thumb, 272 bytes, Stack size 72 bytes, main.o(i.main))
 <BR><BR>[Stack]<UL><LI>Max Depth = 232<LI>Call Chain = main &rArr; GLCD_DisplayString &rArr; GLCD_DisplayChar &rArr; GLCD_DrawChar &rArr; GLCD_SetWindow &rArr; wr_reg &rArr; wr_dat
 </UL>
-<BR>[Calls]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;timer_setup
+<BR>[Calls]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;timer_setup
 <LI><a href="#[4b]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osThreadCreate
 <LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osKernelStart
 <LI><a href="#[4a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osKernelInitialize
@@ -799,11 +802,12 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[6a]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_Convert_232_565
 </UL>
 
-<P><STRONG><a name="[40]"></a>monitor</STRONG> (Thumb, 426 bytes, Stack size 24 bytes, main.o(i.monitor))
+<P><STRONG><a name="[40]"></a>monitor</STRONG> (Thumb, 508 bytes, Stack size 24 bytes, main.o(i.monitor))
 <BR><BR>[Stack]<UL><LI>Max Depth = 184<LI>Call Chain = monitor &rArr; GLCD_DisplayStringPrecise &rArr; GLCD_DisplayCharPrecise &rArr; GLCD_DrawChar &rArr; GLCD_SetWindow &rArr; wr_reg &rArr; wr_dat
 </UL>
 <BR>[Calls]<UL><LI><a href="#[80]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMutexWait
 <LI><a href="#[84]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMutexRelease
+<LI><a href="#[7e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osMutexCreate
 <LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
 <LI><a href="#[69]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_WindowMax
 <LI><a href="#[94]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;GLCD_SetBackColor
@@ -853,16 +857,20 @@ Global Symbols
 </UL>
 <BR>[Calls]<UL><LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;svcMutexCreate
 </UL>
-<BR>[Called By]<UL><LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;aim
+<BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;monitor
+<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;background
+<LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;aim
 </UL>
 
 <P><STRONG><a name="[84]"></a>osMutexRelease</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, rt_cmsis.o(i.osMutexRelease))
 <BR><BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;monitor
+<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;background
 <LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;aim
 </UL>
 
 <P><STRONG><a name="[80]"></a>osMutexWait</STRONG> (Thumb, 18 bytes, Stack size 0 bytes, rt_cmsis.o(i.osMutexWait))
 <BR><BR>[Called By]<UL><LI><a href="#[40]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;monitor
+<LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;background
 <LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;aim
 </UL>
 
@@ -990,8 +998,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[9e]"></a>rt_get_first</STRONG> (Thumb, 40 bytes, Stack size 0 bytes, rt_list.o(i.rt_get_first))
-<BR><BR>[Called By]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_chk_robin
-<LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_systick
+<BR><BR>[Called By]<UL><LI><a href="#[4f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_systick
 <LI><a href="#[4e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_pop_req
 <LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_tsk_prio
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_tsk_delete
@@ -1001,6 +1008,7 @@ Global Symbols
 <LI><a href="#[9c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_block
 <LI><a href="#[b2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_sem_psh
 <LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mbx_psh
+<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_chk_robin
 </UL>
 
 <P><STRONG><a name="[c3]"></a>rt_init_mem</STRONG> (Thumb, 26 bytes, Stack size 0 bytes, rt_memory.o(i.rt_init_mem))
@@ -1114,8 +1122,7 @@ Global Symbols
 <P><STRONG><a name="[a1]"></a>rt_put_prio</STRONG> (Thumb, 54 bytes, Stack size 12 bytes, rt_list.o(i.rt_put_prio))
 <BR><BR>[Stack]<UL><LI>Max Depth = 12<LI>Call Chain = rt_put_prio
 </UL>
-<BR>[Called By]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_chk_robin
-<LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_resort_prio
+<BR>[Called By]<UL><LI><a href="#[b1]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_resort_prio
 <LI><a href="#[c0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_tsk_prio
 <LI><a href="#[be]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_tsk_delete
 <LI><a href="#[b0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mut_wait
@@ -1126,6 +1133,7 @@ Global Symbols
 <LI><a href="#[ab]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_mbx_psh
 <LI><a href="#[a6]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_evt_psh
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_dec_dly
+<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_chk_robin
 </UL>
 
 <P><STRONG><a name="[a4]"></a>rt_put_rdy_first</STRONG> (Thumb, 14 bytes, Stack size 0 bytes, rt_list.o(i.rt_put_rdy_first))
@@ -1223,12 +1231,12 @@ Global Symbols
 <P><STRONG><a name="[4f]"></a>rt_systick</STRONG> (Thumb, 50 bytes, Stack size 8 bytes, rt_system.o(i.rt_systick))
 <BR><BR>[Stack]<UL><LI>Max Depth = 72<LI>Call Chain = rt_systick &rArr; sysTimerTick &rArr; isrMessagePut &rArr; isr_mbx_send &rArr; rt_psq_enq
 </UL>
-<BR>[Calls]<UL><LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_chk_robin
-<LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_put_rdy_first
+<BR>[Calls]<UL><LI><a href="#[a4]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_put_rdy_first
 <LI><a href="#[9f]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_switch_req
 <LI><a href="#[9e]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_get_first
 <LI><a href="#[bb]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;sysTimerTick
 <LI><a href="#[a2]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_dec_dly
+<LI><a href="#[a0]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;rt_chk_robin
 </UL>
 <BR>[Called By]<UL><LI><a href="#[50]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OS_Tick_Handler
 <LI><a href="#[9]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SysTick_Handler
@@ -1286,7 +1294,7 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[31]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;fputc
 </UL>
 
-<P><STRONG><a name="[88]"></a>showResult</STRONG> (Thumb, 96 bytes, Stack size 8 bytes, main.o(i.showResult))
+<P><STRONG><a name="[88]"></a>showResult</STRONG> (Thumb, 108 bytes, Stack size 8 bytes, main.o(i.showResult))
 <BR><BR>[Stack]<UL><LI>Max Depth = 168<LI>Call Chain = showResult &rArr; GLCD_DisplayString &rArr; GLCD_DisplayChar &rArr; GLCD_DrawChar &rArr; GLCD_SetWindow &rArr; wr_reg &rArr; wr_dat
 </UL>
 <BR>[Calls]<UL><LI><a href="#[87]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;osDelay
@@ -1415,11 +1423,11 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[7f]"></a>timer_read</STRONG> (Thumb, 8 bytes, Stack size 0 bytes, timer.o(i.timer_read))
-<BR><BR>[Called By]<UL><LI><a href="#[85]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateDuckStartHeight
+<BR><BR>[Called By]<UL><LI><a href="#[86]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;generateDuckStartHeight
 <LI><a href="#[42]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;aim
 </UL>
 
-<P><STRONG><a name="[86]"></a>timer_setup</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, timer.o(i.timer_setup))
+<P><STRONG><a name="[85]"></a>timer_setup</STRONG> (Thumb, 42 bytes, Stack size 0 bytes, timer.o(i.timer_setup))
 <BR><BR>[Called By]<UL><LI><a href="#[45]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 <LI><a href="#[41]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;background
 </UL>

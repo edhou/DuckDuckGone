@@ -33,7 +33,7 @@ typedef struct {
 } duck_t;
 
 // Ducks on display
-const int NDUCKS = 60; // number of ducks the will spawn during game time
+const int NDUCKS = 30; // number of ducks the will spawn during game time
 duck_t ducks[NDUCKS];
 const int DUCKFREQ = 60/NDUCKS; // rounds a lot
 
@@ -44,7 +44,7 @@ unsigned int yCross=60;
 
 // Misc. data
 uint8_t inProgress = 0;
-uint32_t time = 15;
+uint32_t time = 60;
 uint8_t fireEnable = 1; //1 = player can fire; 0 = player can't fire
 uint8_t shotFired = 0;
 char timeDisp[6];
@@ -89,11 +89,11 @@ void showResult(void){
 	GLCD_Clear(0x6DEB);
 	
 	GLCD_DisplayString(3, 3, 1, "Game Over");	
-	GLCD_DisplayString(6, 1, 1, "Your Score:");	
+	GLCD_DisplayString(6, 2, 1, "Your Score:");	
 	sprintf(scoreDisp, "%d", score);
-	GLCD_DisplayString(7, 1, 1, scoreDisp);	
-	GLCD_DisplayString(9, 1, 1, "Press RESTART");	
-	GLCD_DisplayString(10, 1, 1, "to Play Again");	
+	GLCD_DisplayString(8, 7, 1, scoreDisp);	
+	GLCD_DisplayString(10, 1, 1, "Press RESTART");	
+	GLCD_DisplayString(11, 1, 1, "to Duck Again");	
 }
 
 // Function to end game and show score
